@@ -3,6 +3,7 @@ from flask_cors import CORS
 from google.cloud import texttospeech
 import os
 import subprocess
+from flask_socketio import SocketIO
 
 # configuration
 DEBUG = True
@@ -10,6 +11,7 @@ DEBUG = True
 # instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
+socketio = SocketIO(app)
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -33,7 +35,7 @@ def text_to_speech(message):
         out.write(response.audio_content)
         print('Audio content written to file "output.wav"')
 
-    
+
 def lip_sync():
     cmd = ["./Rhubarb_Lip_Sync/rhubarb","-o", "Cache/output.json", "Cache/output.wav", "-f", "json"]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
@@ -59,5 +61,15 @@ def text_input():
 
     return jsonify(response_obj)
 
+
+@socketio.on('lipsync')
+def handle_new_lipsync(json, methods=['POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
+
+
+def messageReceived(methods=['POST']):
+    print('message was received!!!')
+
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app, debug=True)
