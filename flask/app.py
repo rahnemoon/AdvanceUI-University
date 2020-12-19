@@ -11,12 +11,38 @@ DEBUG = True
 # instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
-socketio = SocketIO(app)
-
+#socketio = SocketIO(app, cors_allowed_origins='https://localhost')
+#socketio.init_app(app, cors_allowed_origins="*")
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./emoty-tts-key.json"
+
+quick_reactions ={
+    'Greeting': {
+        'sound': '',
+        'lip_sync': '',
+        'animation': ''
+    },
+
+    'What popping': {
+        'sound': '',
+        'lip_sync': '',
+        'animation': ''
+    },
+
+    'How you doing': {
+        'sound': '',
+        'lip_sync': '',
+        'animation': ''
+    },
+
+    'Hang in there': {
+        'sound': '',
+        'lip_sync': '',
+        'animation': ''
+    },
+}
 
 # sanity check route
 def text_to_speech(message):
@@ -61,15 +87,28 @@ def text_input():
 
     return jsonify(response_obj)
 
+@app.route('/quick-re', methods=['GET'])
+def quick_reactions_send():
+    response_obj = {"status": "successful"}
+    if request.method == "GET":
+        response_obj["re_list"] = list(quick_reactions.keys())
 
-@socketio.on('lipsync')
-def handle_new_lipsync(json, methods=['POST']):
+    else:
+        response_obj["status"] = "failed"
+
+    return jsonify(response_obj)
+
+
+'''@socketio.on('lipsync')
+def handle_new_lipsync(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)
+    socketio.emit('my response', json, callback=messageReceived)'''
 
 
-def messageReceived(methods=['POST']):
-    print('message was received!!!')
+'''def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')'''
+
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    #socketio.run(app, debug=True)
+    app.run()
