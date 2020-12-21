@@ -1,8 +1,8 @@
 <template>
   <div class='column is-9'>
       <div class="control textarea-container has-fixed-size">
-        <textarea class="textarea" placeholder="Text input" rows="2" v-model="input_txt"></textarea>
-        <span class="mr-5 mt-4" v-on:click="on_submit()">
+        <textarea class="textarea" placeholder="Text input" rows="1" v-model="input_txt" @keyup.enter="on_submit()"></textarea>
+        <span class="mr-5 mt-2" v-on:click="on_submit()">
         <i class="fas fa-2x fa-paper-plane"></i>
         </span>
       </div>
@@ -14,9 +14,10 @@
 import axios from 'axios';
 
 export default {
+
   name: 'ChatInput',
   props: {
-    msg: String
+    msg: String,
   },
   methods: {
     send_message(msg){
@@ -25,16 +26,28 @@ export default {
       .catch((error) => {console.log(error);});
     },
     on_submit(){
+      this.msg_id++;
+      var today = new Date();
+      var time = today.getHours() + ":" + today.getMinutes();
       const msg = {
-      txt: this.input_txt
+      txt: this.input_txt,
+      id:this.msg_id,
+      time: time,
       };
-      console.log(msg);
-      this.send_message(msg)
-    }  
+      this.update_history(msg);
+      this.send_message(msg);
+      this.input_txt = "";
+    },
+    update_history(msg){
+      //EventBus.$emit('msg_history_update', msg);
+      this.$eventHub.$emit('msg_history_update', msg);
+    } 
   },
   data: function(){
     return{
-      input_txt: null
+      input_txt: null,
+      msg_id: 0,
+      
     }
   },
 }
@@ -60,4 +73,5 @@ textarea{
   top: 0;
   right: 0;
 }
+
 </style>

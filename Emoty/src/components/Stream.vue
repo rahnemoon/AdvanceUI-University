@@ -1,10 +1,9 @@
 <template>
 
-  <div class='column is-9'>
+  <div class='column is-9 set-height mb-3'>
     
-      <svg width="1500" height="450">
-        <rect width="1040" height="470" style="fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,0)" />
-    </svg>
+  <!-- <video id="localVideo" autoplay muted></video> !-->
+  <video id="remoteVideo" autoplay muted></video>
   </div>
 
 </template>
@@ -14,14 +13,27 @@ export default {
   name: 'Stream',
   props: {
     msg: String
-  }
+  },
+  
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 .home{
   background: #40E0D0;
+}
+video {
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 0;
+}
+.set-height {
+  height: 75vh;
 }
 </style>

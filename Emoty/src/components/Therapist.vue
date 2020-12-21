@@ -1,7 +1,6 @@
 <template>
-      <div>
-            <NavBar/>
-
+  <div>
+    <NavBar dir="rtl"/>
     <div class='columns is-2 mx-2'>
       <Stream/>
       <ChatH/>
@@ -21,6 +20,7 @@ import QuickR from './QuickR.vue'
 import ChatInput from './ChatInput.vue'
 import NavBar from './NavBar.vue'
 
+
 export default {
   name: 'Therapist',
   components: {
@@ -29,6 +29,7 @@ export default {
     QuickR,
     ChatInput,
     NavBar
+    
   }
 }
 </script>

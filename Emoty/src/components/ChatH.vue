@@ -1,67 +1,59 @@
 <template>
 
-  <div class='column is-3'>
-    <div class="has-text-centered has-text-weight-semibold is-size-4 has-text-black mb-5">
+  <div class='column is-3 set-height'>
+    <div class="has-text-centered has-text-weight-semibold is-size-4 has-text-black mb-4">
     Chat History
     </div>
-    <div class="chatHistoryContent has-background-white-bis">
-      <div class="message-body my-1 chat">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            <div class="level-right is-size-7 has-text-grey-light">10:2</div> 
-        </div>
-        <hr>
-      <div class="message-body my-1 chat">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            <div class="level-right is-size-7 has-text-grey-light">10:2</div> 
-        </div>
-        <hr>
-      <div class="message-body my-1 chat">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            <div class="level-right is-size-7 has-text-grey-light">10:2</div> 
-        </div>
-        <hr>
-      <div class="message-body my-1 chat">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            <div class="level-right is-size-7 has-text-grey-light">10:2</div> 
-        </div>
-        <hr>
-      <div class="message-body my-1 chat">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            <div class="level-right is-size-7 has-text-grey-light">10:2</div> 
-        </div>
-        <hr>
-      <div class="message-body my-1 chat">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            <div class="level-right is-size-7 has-text-grey-light">10:2</div> 
-        </div>
-        
-    </div>
+        <div class="chatHistoryContent has-background-white-bis">
+
+    <ViewChatHistory v-for="h in history" :msg="h" :key="h.id"/>
+  </div>
   </div>
 
 </template>
 
 <script>
+import ViewChatHistory from './ViewChatHistory.vue'
+
 export default {
   name: 'ChatH',
-  props: {
-    msg: String
+  components:{
+    ViewChatHistory
+  },
+  
+  methods: {
+    receive_msg(){
+    this.$eventHub.$on('msg_history_update', this.update_nokhod);
+    
+    },
+    update_nokhod(msg){
+      console.log(msg);
+      this.history.unshift(msg);
+      console.log(this.history);
+    }
+    },
+    created() {
+    this.receive_msg();
+        },
+
+  data(){
+    return {
+      msg: {},
+      history: [],
+    }
   }
-}
+  }
 </script>
 
 <style scoped>
 .chatHistoryContent{
-  max-height: 25em;
+  height: 100%;
+  width: 100%;
   overflow: auto;
   border-radius: 12px;
 }
-.chat{
-  padding: 0.75em 0.75em;
-  border-width: 0 0 0 0;
+.set-height {
+  height: calc(75vh - 50px);
 }
-hr{
-  border-top: 1px solid #b5b5b5;
-  margin: 0 1em;
-  padding: 0 1em;
-}
+
 </style>
