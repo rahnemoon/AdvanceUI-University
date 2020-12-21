@@ -5,42 +5,52 @@ import os
 import subprocess
 from flask_socketio import SocketIO
 
+#import socketio
+#from wsgi import app
 # configuration
 DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
-#socketio = SocketIO(app, cors_allowed_origins='https://localhost')
-#socketio.init_app(app, cors_allowed_origins="*")
+socketio = SocketIO(app, engineio_logger=True, logger=True)
+socketio.init_app(app, cors_allowed_origins="*")
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./emoty-tts-key.json"
 
 quick_reactions ={
-    'Greeting': {
+    'Greetings': {
+        'id': '0',
         'sound': '',
         'lip_sync': '',
-        'animation': ''
+        'animation': '',
+        'emoji': '😚'
     },
 
     'What popping': {
+        'id': '1',
         'sound': '',
         'lip_sync': '',
-        'animation': ''
+        'animation': '',
+        'emoji': '😜'
     },
 
-    'How you doing': {
+    'Nice job!': {
+        'id': '2',
         'sound': '',
         'lip_sync': '',
-        'animation': ''
+        'animation': '',
+        'emoji': '😉'
     },
 
     'Hang in there': {
+        'id': '3',
         'sound': '',
         'lip_sync': '',
-        'animation': ''
+        'animation': '',
+        'emoji': '😎'
     },
 }
 
@@ -91,7 +101,14 @@ def text_input():
 def quick_reactions_send():
     response_obj = {"status": "successful"}
     if request.method == "GET":
-        response_obj["re_list"] = list(quick_reactions.keys())
+        lists = []
+        for k in quick_reactions:
+            lists.append({
+                'id': quick_reactions[k]['id'],
+                'key': k,
+                'emoji': quick_reactions[k]['emoji']
+            })
+        response_obj["re_list"] = lists
 
     else:
         response_obj["status"] = "failed"
@@ -102,13 +119,18 @@ def quick_reactions_send():
 '''@socketio.on('lipsync')
 def handle_new_lipsync(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)'''
+    socketio.emit('my response', json, callback=messageReceived)
 
 
-'''def messageReceived(methods=['GET', 'POST']):
+def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')'''
 
+@socketio.on('lip')
+def handle_message(data):
+    print('received message: ' + data + "\n\n\n\n\n\n\n")
 
 if __name__ == '__main__':
-    #socketio.run(app, debug=True)
-    app.run()
+    socketio.run(app, debug=True)
+    #app.run()
+    #sio = socketio.Server()
+    #app = socketio.WSGIApp(sio, app)
