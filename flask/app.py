@@ -4,6 +4,7 @@ from google.cloud import texttospeech
 import os
 import subprocess
 from flask_socketio import SocketIO
+from flask_socketio import send, emit
 
 #import socketio
 #from wsgi import app
@@ -26,7 +27,7 @@ quick_reactions ={
         'sound': '',
         'lip_sync': '',
         'animation': '',
-        'emoji': '😚'
+        'emoji': 'Happy.svg',
     },
 
     'What popping': {
@@ -34,7 +35,7 @@ quick_reactions ={
         'sound': '',
         'lip_sync': '',
         'animation': '',
-        'emoji': '😜'
+        'emoji': 'Sad.svg',
     },
 
     'Nice job!': {
@@ -42,7 +43,7 @@ quick_reactions ={
         'sound': '',
         'lip_sync': '',
         'animation': '',
-        'emoji': '😉'
+        'emoji': 'Surprised.svg',
     },
 
     'Hang in there': {
@@ -50,7 +51,7 @@ quick_reactions ={
         'sound': '',
         'lip_sync': '',
         'animation': '',
-        'emoji': '😎'
+        'emoji': 'Fear.svg',
     },
 }
 
@@ -62,7 +63,8 @@ def text_to_speech(message):
         language_code="en-US", name="en-US-Wavenet-H", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE
     )
     audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.LINEAR16
+        audio_encoding=texttospeech.AudioEncoding.LINEAR16,
+        speaking_rate=0.8
     )
     response = client.synthesize_speech(
         input=synthesis_input, voice=voice, audio_config=audio_config
@@ -70,7 +72,6 @@ def text_to_speech(message):
     with open("Cache/output.wav", "wb") as out:
         out.write(response.audio_content)
         print('Audio content written to file "output.wav"')
-
 
 def lip_sync():
     cmd = ["./Rhubarb_Lip_Sync/rhubarb","-o", "Cache/output.json", "Cache/output.wav", "-f", "json"]
@@ -115,19 +116,50 @@ def quick_reactions_send():
 
     return jsonify(response_obj)
 
+@app.route('/submitted_qr', methods=['POST'])
+def receive_quick_reaction():
+    response_obj = {"status": "successful"}
+    if request.method == "POST":
+        post_data = request.get_json()
+        # load from cache
+        print("selected raction: " + str(post_data))
 
-'''@socketio.on('lipsync')
-def handle_new_lipsync(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)
+    else:
+        response_obj["status"] = "failed"
+
+    return jsonify(response_obj)
+
+@app.route('/selected_reaction', methods=['POST'])
+def receive_reaction():
+    response_obj = {"status": "successful"}
+    if request.method == "POST":
+        post_data = request.get_json()
+        print("selected raction: " + str(post_data))
+
+    else:
+        response_obj["status"] = "failed"
+
+    return jsonify(response_obj)
 
 
-def messageReceived(methods=['GET', 'POST']):
-    print('message was received!!!')'''
+def read_lips_sync():
+    with open('Cache/output.json', 'r') as file:
+        return json.load(file)
 
-@socketio.on('lip')
-def handle_message(data):
-    print('received message: ' + data + "\n\n\n\n\n\n\n")
+def read_generated_audio():
+    with open('Cache/output.wav', 'rb') as audio:
+        data = audio.read()
+        return data
+
+
+
+@socketio.on('send_file', namespace='/lips')
+def send_json(message):
+    lips_json = json.dumps(read_lips_sync())
+    audio = read_generated_audio()
+    emit('send_json', lips_json)
+    emit('send_audio', audio)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
