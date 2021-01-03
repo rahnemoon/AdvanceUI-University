@@ -12,9 +12,9 @@
   </div>
   <div class="dropdown-menu" id="dropdown-menu7" role="menu">
     <div class="dropdown-content popup-item-border">
-      <div class="dropdown-item popup-item-width">
-        <p>&#129409; {{list}}</p>
-      </div><hr>
+      <QReactionView v-on:selectedReaction="submittedQuickReaction" v-for="r in list" :reaction="r" :key="r.id"/>
+      
+
     </div>
   </div>
 </div>
@@ -24,18 +24,45 @@
 
 <script>
 import axios from 'axios';
+import QReactionView from './QReactionView.vue'
 
 export default {
   name: 'QuickR',
+  components :{
+    QReactionView
+  },
   props: {
     msg: String
   },
   methods: {
+    submittedQuickReaction(reaction){
+      this.send_quick_reaction(reaction.id);
+      this.update_history(reaction.key, reaction.emoji);
+    },
+    send_quick_reaction(reaction_id){
+      const url = "http://localhost:5000/submitted_qr";
+      var msg = {id: reaction_id};
+      axios.post(url, msg)
+      .catch((error) => {console.log(error);});
+
+    },
+    update_history(key, emoji){
+      var today = new Date();
+      var time = today.getHours() + ":" + (today.getMinutes()<10?'0':'') + today.getMinutes();
+      var idRandom = Math.random(); 
+      const msg = {
+      txt: key,
+      id:idRandom,
+      time: time,
+      emoji: emoji,
+      };
+      this.$eventHub.$emit('msg_history_update', msg);
+    }, 
     receive_re_list(){
       const url = "http://localhost:5000/quick-re";
       axios.get(url)
       .then(response=>{
-        this.list = response.data
+        this.list = response.data.re_list
       })
       .catch((error) => {console.log(error);});
       
@@ -49,6 +76,7 @@ export default {
     data(){
     return {
       list: [],
+      reaction: {},
     }
   }
     
@@ -58,16 +86,6 @@ export default {
 
 
 <style scoped>
-.popup-item-width{
-  min-width: 21rem;
-}
-.popup-item-border{
-  border-radius: 30px;
-}
-hr{
-  margin: 0 0 0 0px;
-}
-
 .quick-r{
   height: 100%;
   width: 100%;
@@ -79,5 +97,9 @@ hr{
   height: 100%;
   width: 100%;
   padding: 0px 0px !important;
+}
+
+.popup-item-border{
+  border-radius: 30px;
 }
 </style>

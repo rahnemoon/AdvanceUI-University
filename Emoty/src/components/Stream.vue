@@ -3,18 +3,24 @@
   <div class='column is-9 set-height mb-3'>
     
   <!-- <video id="localVideo" autoplay muted></video> !-->
-  <video id="remoteVideo" autoplay muted></video>
+    <ScreenOnStream/>
+   <video id="remoteVideo" autoplay muted></video>
   </div>
 
 </template>
 
 <script>
+import ScreenOnStream from './ScreenOnStream.vue'
+
 export default {
   name: 'Stream',
   props: {
     msg: String
   },
-  
+  components:{
+    ScreenOnStream
+  },
+
 }
 </script>
 
@@ -23,7 +29,7 @@ export default {
   background: #40E0D0;
 }
 video {
-  background: white;
+  background: black;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -35,5 +41,7 @@ video {
 }
 .set-height {
   height: 75vh;
+  position: relative;
 }
+
 </style>

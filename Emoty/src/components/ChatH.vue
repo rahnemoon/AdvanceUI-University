@@ -27,9 +27,7 @@ export default {
     
     },
     update_nokhod(msg){
-      console.log(msg);
       this.history.unshift(msg);
-      console.log(this.history);
     }
     },
     created() {
