@@ -11,10 +11,16 @@ from flask_socketio import send, emit
 # configuration
 DEBUG = True
 
+global CHECK_FILES_SEND 
+CHECK_FILES_SEND = False
+
+global SELECTED_EMOTION 
+SELECTED_EMOTION = ''
+
 # instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
-socketio = SocketIO(app, engineio_logger=True, logger=True)
+socketio = SocketIO(app, engineio_logger=True)
 socketio.init_app(app, cors_allowed_origins="*")
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -73,6 +79,9 @@ def text_to_speech(message):
         out.write(response.audio_content)
         print('Audio content written to file "output.wav"')
 
+    global CHECK_FILES_SEND 
+    CHECK_FILES_SEND = True
+
 def lip_sync():
     cmd = ["./Rhubarb_Lip_Sync/rhubarb","-o", "Cache/output.json", "Cache/output.wav", "-f", "json"]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
@@ -84,11 +93,14 @@ def lip_sync():
         data = json.load(result)
 
 
+# receives message with selected emotion from therapist
 @app.route('/text-input', methods=['POST'])
 def text_input():
     response_obj = {"status": "successful"}
     if request.method == "POST":
         post_data = request.get_json()
+        global SELECTED_EMOTION
+        SELECTED_EMOTION = post_data['emoji'].split('.')[0]
         #response_obj["message"] = post_data["txt"]
         text_to_speech(post_data["txt"])
         lip_sync()
@@ -98,6 +110,7 @@ def text_input():
 
     return jsonify(response_obj)
 
+# send list of quick reactions to therapist
 @app.route('/quick-re', methods=['GET'])
 def quick_reactions_send():
     response_obj = {"status": "successful"}
@@ -116,6 +129,7 @@ def quick_reactions_send():
 
     return jsonify(response_obj)
 
+# receive submitted quick reaction form therapist
 @app.route('/submitted_qr', methods=['POST'])
 def receive_quick_reaction():
     response_obj = {"status": "successful"}
@@ -129,6 +143,7 @@ def receive_quick_reaction():
 
     return jsonify(response_obj)
 
+# receive selected reaction form therapist which are shown on floating panel of stream
 @app.route('/selected_reaction', methods=['POST'])
 def receive_reaction():
     response_obj = {"status": "successful"}
@@ -141,26 +156,34 @@ def receive_reaction():
 
     return jsonify(response_obj)
 
-
+# read json file
 def read_lips_sync():
     with open('Cache/output.json', 'r') as file:
         return json.load(file)
 
+# read wav audio file 
 def read_generated_audio():
     with open('Cache/output.wav', 'rb') as audio:
         data = audio.read()
         return data
 
 
-
+# socket for sending audio and json     
 @socketio.on('send_file', namespace='/lips')
 def send_json(message):
-    lips_json = json.dumps(read_lips_sync())
-    audio = read_generated_audio()
-    emit('send_json', lips_json)
-    emit('send_audio', audio)
+    global CHECK_FILES_SEND
+    global SELECTED_EMOTION
 
+    if CHECK_FILES_SEND == True:
+        lips_json = json.dumps(read_lips_sync())
+        audio = read_generated_audio()
+        emit('send_json', lips_json)
+        emit('send_audio', audio)
+        emit('send_emotion', SELECTED_EMOTION)
 
+        CHECK_FILES_SEND = False
+        print("Files are emitted.")
+    #socketio.sleep(0)
 if __name__ == '__main__':
     socketio.run(app, debug=True)
     #app.run()
