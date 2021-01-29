@@ -5,6 +5,7 @@ import os
 import subprocess
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
+import platform
 
 #import socketio
 #from wsgi import app
@@ -17,6 +18,15 @@ CHECK_FILES_SEND = False
 global SELECTED_EMOTION 
 SELECTED_EMOTION = ''
 
+global SELECTED_QUICK_REACTION
+SELECTED_QUICK_REACTION = ''
+
+global CHECK_EMOTION_SEND
+CHECK_EMOTION_SEND = False
+
+global CHECK_QUICK_REACTION_SEND
+CHECK_QUICK_REACTION_SEND = False
+
 # instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -28,36 +38,40 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./emoty-tts-key.json"
 
 quick_reactions ={
-    'Greetings': {
+    'Hello': {
         'id': '0',
-        'sound': '',
-        'lip_sync': '',
-        'animation': '',
+        'animation': 'Happy',
         'emoji': 'Happy.svg',
     },
 
-    'What popping': {
+    'How are you?': {
         'id': '1',
-        'sound': '',
-        'lip_sync': '',
-        'animation': '',
-        'emoji': 'Sad.svg',
+        'animation': 'Neutral',
+        'emoji': 'Neutral.svg',
     },
 
     'Nice job!': {
         'id': '2',
-        'sound': '',
-        'lip_sync': '',
-        'animation': '',
-        'emoji': 'Surprised.svg',
+        'animation': 'Happy',
+        'emoji': 'Happy.svg',
     },
 
-    'Hang in there': {
+    "I'm sorry.": {
         'id': '3',
-        'sound': '',
-        'lip_sync': '',
-        'animation': '',
-        'emoji': 'Fear.svg',
+        'animation': 'Sad',
+        'emoji': 'Sad.svg',
+    },
+
+    "I couldn't hear you, can you repeat?": {
+        'id': '4',
+        'animation': 'Neutral',
+        'emoji': 'Neutral.svg',
+    },
+
+    'Try again!': {
+        'id': '5',
+        'animation': 'Neutral',
+        'emoji': 'Neutral.svg',
     },
 }
 
@@ -70,7 +84,7 @@ def text_to_speech(message):
     )
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16,
-        speaking_rate=0.8
+        speaking_rate=0.7
     )
     response = client.synthesize_speech(
         input=synthesis_input, voice=voice, audio_config=audio_config
@@ -83,7 +97,16 @@ def text_to_speech(message):
     CHECK_FILES_SEND = True
 
 def lip_sync():
-    cmd = ["./Rhubarb_Lip_Sync/rhubarb","-o", "Cache/output.json", "Cache/output.wav", "-f", "json"]
+    plat = platform.system()
+    path = ''
+    if plat == 'Darwin':
+        path = "./Rhubarb_Lip_Sync/rhubarb-lip-sync-1.10.0-osx/rhubarb"
+    elif plat == 'Linux':
+        path = "./Rhubarb_Lip_Sync/rhubarb-lip-sync-1.10.0-linux/rhubarb"
+    elif plat == 'Windows':
+        path = "./Rhubarb_Lip_Sync/rhubarb-lip-sync-1.10.0-win32/rhubarb.exe"
+
+    cmd = [path,"-o", "Cache/output.json", "Cache/output.wav", "-f", "json"]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
@@ -132,11 +155,13 @@ def quick_reactions_send():
 # receive submitted quick reaction form therapist
 @app.route('/submitted_qr', methods=['POST'])
 def receive_quick_reaction():
+    global SELECTED_QUICK_REACTION
+    global CHECK_QUICK_REACTION_SEND
     response_obj = {"status": "successful"}
     if request.method == "POST":
         post_data = request.get_json()
-        # load from cache
-        print("selected raction: " + str(post_data))
+        SELECTED_QUICK_REACTION = post_data
+        CHECK_QUICK_REACTION_SEND = True
 
     else:
         response_obj["status"] = "failed"
@@ -146,10 +171,13 @@ def receive_quick_reaction():
 # receive selected reaction form therapist which are shown on floating panel of stream
 @app.route('/selected_reaction', methods=['POST'])
 def receive_reaction():
+    global CHECK_EMOTION_SEND
+    global SELECTED_EMOTION
     response_obj = {"status": "successful"}
     if request.method == "POST":
         post_data = request.get_json()
-        print("selected raction: " + str(post_data))
+        SELECTED_EMOTION = post_data['reaction']
+        CHECK_EMOTION_SEND = True
 
     else:
         response_obj["status"] = "failed"
@@ -173,7 +201,10 @@ def read_generated_audio():
 def send_json(message):
     global CHECK_FILES_SEND
     global SELECTED_EMOTION
-
+    global CHECK_EMOTION_SEND
+    global CHECK_QUICK_REACTION_SEND
+    global SELECTED_QUICK_REACTION
+     
     if CHECK_FILES_SEND == True:
         lips_json = json.dumps(read_lips_sync())
         audio = read_generated_audio()
@@ -183,6 +214,29 @@ def send_json(message):
 
         CHECK_FILES_SEND = False
         print("Files are emitted.")
+    
+    if CHECK_EMOTION_SEND == True:
+        emit('full_emotion_recreation', SELECTED_EMOTION)
+        CHECK_EMOTION_SEND = False
+    
+    if CHECK_QUICK_REACTION_SEND == True:
+        idd = SELECTED_QUICK_REACTION['id']
+        emotion = quick_reactions[SELECTED_QUICK_REACTION['key']]['animation']
+
+        with open("QuickReactions/" + str(idd) +".wav", "rb") as out:
+            audio_q = out.read()
+        
+        with open("QuickReactions/" + str(idd) +".json", "r") as lips:
+            lipsync_q = json.load(lips)
+        
+        print("ertyuiosdfghjkwertyuisdfghjkwertyuisdfghjksdfghjksdfghjksdfghjksdfghjk")
+        #emit('send_json', lipsync_q)
+        emit('send_audio', audio_q)
+        emit('send_emotion', emotion)
+
+        CHECK_QUICK_REACTION_SEND = False
+
+        
     #socketio.sleep(0)
 if __name__ == '__main__':
     socketio.run(app, debug=True)

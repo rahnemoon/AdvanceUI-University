@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "soundFile": "/Users/amir.salar/Documents/GitHub/AdvanceUI/flask/Cache/output.wav",
+    "duration": 1.38
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.03, "value": "X" },
+    { "start": 0.03, "end": 0.25, "value": "C" },
+    { "start": 0.25, "end": 0.65, "value": "B" },
+    { "start": 0.65, "end": 0.79, "value": "D" },
+    { "start": 0.79, "end": 0.86, "value": "C" },
+    { "start": 0.86, "end": 1.05, "value": "A" },
+    { "start": 1.05, "end": 1.38, "value": "X" }
+  ]
+}
