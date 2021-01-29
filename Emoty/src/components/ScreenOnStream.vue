@@ -1,7 +1,7 @@
 <template>
   <div class='set-size'>
 
-    <video id="remoteVideo" autoplay muted></video>
+      <video id="remoteVideo" autoplay muted></video> 
     <!-- work on zooming on emoty !-->
 
       <button class="btn" @click="send_reaction('Sad')">
@@ -24,8 +24,8 @@
       <img src="../assets/mini-emoji/Fear.svg">
       </button>
 
-      <button class="btn" @click="send_reaction('Anger')">
-      <img src="../assets/mini-emoji/Anger.svg">
+      <button class="btn" @click="send_reaction('Disgust')">
+      <img src="../assets/mini-emoji/Disgust.svg">
       </button>
   </div>
 </div>

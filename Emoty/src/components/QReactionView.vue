@@ -7,8 +7,6 @@
                   </button>
             </div><hr>
       </div>
-
-
 </template>
 
 <script>
@@ -52,12 +50,12 @@ button {
   outline: 0;
 }
 button:hover {
-  box-shadow: 0 0 4pt 1pt rgba(30,136,229 ,0.5);
-  background: rgba(30,136,229 ,0.5);
+  box-shadow: 0 0 4pt 1pt rgba(180,180,180 ,0.5);
+  background: rgba(180,180,180 ,0.5);
   border-radius: 10px;
 }
 button:active {
-  box-shadow: 0 0 4pt 1pt rgba(30,136,229 ,0.8);
-  background: rgba(30,136,229 ,0.8);
+  box-shadow: 0 0 4pt 1pt rgba(180,180,180 ,0.8);
+  background: rgba(180,180,180 ,0.8);
 }
 </style>

@@ -2,7 +2,7 @@ import 'bulma/css/bulma.css';
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router';
-import './script.js';
+//import './script.js';
 //import './assets/js/Tween.js';
 
 

@@ -36,12 +36,14 @@ export default {
   },
   methods: {
     submittedQuickReaction(reaction){
-      this.send_quick_reaction(reaction.id);
+      this.send_quick_reaction(reaction.id, reaction.key);
       this.update_history(reaction.key, reaction.emoji);
     },
-    send_quick_reaction(reaction_id){
+    send_quick_reaction(reaction_id, reaction_key){
       const url = "http://localhost:5000/submitted_qr";
-      var msg = {id: reaction_id};
+      var msg = {
+        id: reaction_id,
+        key: reaction_key};
       axios.post(url, msg)
       .catch((error) => {console.log(error);});
 

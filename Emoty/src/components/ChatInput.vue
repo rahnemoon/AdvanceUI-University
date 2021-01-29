@@ -36,8 +36,8 @@
           <img src="../assets/mini-emoji/Fear.svg">
           </button>
 
-          <button class="btn_reactions" @click="submit('Anger.svg')">
-          <img src="../assets/mini-emoji/Anger.svg">
+          <button class="btn_reactions" @click="submit('Disgust.svg')">
+          <img src="../assets/mini-emoji/Disgust.svg">
           </button>
 
             </div>
