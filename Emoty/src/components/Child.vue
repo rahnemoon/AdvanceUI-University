@@ -2,12 +2,18 @@
     <div style="padding-top: calc((100vh - 70vh)/2)">
         <audio id="audiofile" :src="linkAudio" controls autoplay></audio><br>
         <button class="btn-start" v-on:click='start_session()'>Start Session</button>
-       <!--  <button v-on:click='sendDataCall({type: "store_user"}, "Childish")'>Send call</button>
-        <button v-on:click='sendDataScreen({type: "store_user"}, "screen")'>Send screen</button>
-        <button v-on:click='screenShare()'>share screen</button> -->
+
         <h1 class="circle">
-            <div id="titleBox">
+            <div v-if="emoji_visibility" id="hide">
+                <img class="emoj" src="../assets/mini-emoji/Sad.svg">
+                <img class="emoj" src="../assets/mini-emoji/Happy.svg">
+                <img class="emoj" src="../assets/mini-emoji/Surprised.svg">
+                <img class="emoj" src="../assets/mini-emoji/Anger.svg">
+                <img class="emoj" src="../assets/mini-emoji/Fear.svg">
+                <img class="emoj" src="../assets/mini-emoji/Disgust.svg">
             </div>
+
+
             <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path id="hair" d="M254.07 167.395L252.573 167.498L254.07 167.395ZM261.009 156.956C261.595 157.542 262.544 157.542 263.13 156.956C263.716 156.37 263.716 155.42 263.13 154.834L261.009 156.956ZM250.668 158.729C251.497 158.729 252.168 158.058 252.168 157.229C252.168 156.401 251.497 155.729 250.668 155.729L250.668 158.729ZM256 175.5C254.573 175.038 254.573 175.038 254.573 175.037C254.573 175.037 254.574 175.036 254.574 175.035C254.574 175.034 254.574 175.033 254.575 175.032C254.575 175.031 254.576 175.029 254.576 175.027C254.577 175.024 254.578 175.022 254.579 175.02C254.58 175.016 254.581 175.014 254.581 175.013C254.581 175.013 254.581 175.015 254.58 175.017C254.569 175.041 254.584 174.996 254.645 174.921C254.664 174.898 254.972 174.501 255.584 174.494C256.266 174.487 256.577 174.957 256.584 174.968C256.613 175.01 256.562 174.945 256.472 174.638C256.389 174.352 256.292 173.925 256.188 173.307C255.981 172.072 255.765 170.17 255.566 167.292L252.573 167.498C252.775 170.42 252.999 172.431 253.229 173.803C253.344 174.489 253.464 175.039 253.592 175.477C253.713 175.893 253.866 176.297 254.085 176.627C254.284 176.926 254.773 177.503 255.617 177.494C256.389 177.486 256.839 176.978 256.977 176.808C257.156 176.587 257.266 176.36 257.32 176.238C257.351 176.167 257.376 176.106 257.393 176.06C257.402 176.036 257.409 176.016 257.414 176C257.417 175.991 257.42 175.984 257.422 175.978C257.423 175.975 257.424 175.972 257.425 175.969C257.425 175.968 257.426 175.966 257.426 175.965C257.426 175.964 257.426 175.964 257.427 175.963C257.427 175.962 257.427 175.962 256 175.5ZM255.566 167.292C255.182 161.72 256.532 158.741 257.878 157.433C259.214 156.134 260.465 156.412 261.009 156.956L263.13 154.834C261.174 152.878 258.025 153.106 255.787 155.282C253.557 157.449 252.157 161.47 252.573 167.498L255.566 167.292ZM254.128 169.887C249.917 166.219 248.765 163.157 248.792 161.281C248.818 159.418 249.899 158.729 250.668 158.729L250.668 155.729C247.902 155.729 245.836 158.117 245.792 161.239C245.748 164.348 247.601 168.18 252.158 172.149L254.128 169.887Z" fill="black" />
                 <g id="body" ref="body">
@@ -164,9 +170,6 @@
                 </defs>
             </svg>
         </h1>
-        <!-- <video ref="video_lo" muted id="local-video" autoplay></video>
-            <video ref="video_re" id="remote-video" autoplay></video> -->
-        <video ref="video_screen" id="remote-video" autoplay></video>
     </div>
 </template>
 <script>
@@ -431,9 +434,6 @@ export default {
             };
         },
 
-
-
-
         emotion_neutral() {
             const tl = new TimelineLite();
             tl
@@ -442,18 +442,18 @@ export default {
                 .to("#neri", 0.3, { morphSVG: "#neri" }, "neutral")
                 .to("#nelo", 0.3, { morphSVG: "#nelo" }, "neutral")
                 .to("#neli", 0.3, { morphSVG: "#neli" }, "neutral")
-            //.to("#neTear", 0.3, {morphSVG:"#neTear"},"neutral")
+                .to("#neTear", 0.3, {morphSVG:"#neTear", fill: "FBB03B"},"neutral")
 
         },
 
         emotion_neutral_mouth() {
             const tl = new TimelineLite();
             tl
-                .add("neutral", "+=0.55")
+                .add("neutral", "+=0.01")
 
-                .to("#nem1", 0.3, { morphSVG: "#nem1", fill: "black" }, "neutral")
-                .to("#nem2", 0.3, { morphSVG: "#nem2", fill: "black" }, "neutral")
-                .to("#nem3", 0.3, { morphSVG: "#nem3", fill: "black" }, "neutral")
+                .to("#nem1", 0.0, { morphSVG: "#nem1", fill: "black" }, "neutral")
+                .to("#nem2", 0.0, { morphSVG: "#nem2", fill: "black" }, "neutral")
+                .to("#nem3", 0.0, { morphSVG: "#nem3", fill: "black" }, "neutral")
         },
 
         emotion_angry() {
@@ -464,6 +464,7 @@ export default {
                 .to("#neri", 0.3, { morphSVG: "#aeri" }, "angry")
                 .to("#nelo", 0.3, { morphSVG: "#aelo" }, "angry")
                 .to("#neli", 0.3, { morphSVG: "#aeli" }, "angry")
+                .to("#neTear", 0.3, {morphSVG:"#neTear", fill: "FBB03B"},"angry")
         },
 
         emotion_angry_mouth() {
@@ -483,6 +484,7 @@ export default {
                 .to("#neri", 0.3, { morphSVG: "#seri" }, "surprised")
                 .to("#nelo", 0.3, { morphSVG: "#selo" }, "surprised")
                 .to("#neli", 0.3, { morphSVG: "#seli" }, "surprised")
+                .to("#neTear", 0.3, {morphSVG:"#neTear", fill: "FBB03B"},"surprised")
 
         },
 
@@ -525,6 +527,7 @@ export default {
                 .to("#neri", 0.3, { morphSVG: "#heri" }, "happy")
                 .to("#nelo", 0.3, { morphSVG: "#helo" }, "happy")
                 .to("#neli", 0.3, { morphSVG: "#heli" }, "happy")
+                .to("#neTear", 0.3, {morphSVG:"#neTear", fill: "FBB03B"},"happy")
         },
 
         emotion_happy_mouth() {
@@ -544,6 +547,7 @@ export default {
                 .to("#neri", 0.3, { morphSVG: "#aferi" }, "afraid")
                 .to("#nelo", 0.3, { morphSVG: "#afelo" }, "afraid")
                 .to("#neli", 0.3, { morphSVG: "#afeli" }, "afraid")
+                .to("#neTear", 0.3, {morphSVG:"#neTear", fill: "FBB03B"},"afraid")
         },
         emotion_afraid_mouth() {
             const tl = new TimelineLite();
@@ -562,6 +566,7 @@ export default {
                 .to("#neri", 0.3, { morphSVG: "#dieri" }, "disgust")
                 .to("#nelo", 0.3, { morphSVG: "#dielo" }, "disgust")
                 .to("#neli", 0.3, { morphSVG: "#dieli" }, "disgust")
+                .to("#neTear", 0.3, {morphSVG:"#neTear", fill: "FBB03B"},"disgust")
         },
 
         emotion_disgust_mouth() {
@@ -644,48 +649,49 @@ export default {
         mouth_x() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_f", "+=0.01")
+                .add("mouth_x", "+=0.01")
                 .to("#nem1", 0.0, { morphSVG: "#mx1", fill: "black" }, "mouth_x")
                 .to("#nem2", 0.0, { morphSVG: "#mx2", fill: "black" }, "mouth_x")
                 .to("#nem3", 0.0, { morphSVG: "#mx3", fill: "black" }, "mouth_x")
         },
 
-
         syncAudioText() {
             var audioPlayer = document.getElementById("audiofile");
-            var subtitles = document.getElementById("subtitles");
             var syncData = this.mouthCues;
             var shape = '';
 
             audioPlayer.addEventListener("timeupdate", (e) => {
                 syncData.forEach((element, index, array) => {
-                    if (audioPlayer.currentTime >= element.start && audioPlayer.currentTime <= element.end)
+                    if (audioPlayer.currentTime >= element.start && audioPlayer.currentTime <= element.end){
                         shape = element.value;
-                    if (shape == 'A') {
-                        this.mouth_a();
-                    } else if (shape == 'B') {
-                        this.mouth_b();
-                    } else if (shape == 'C') {
-                        this.mouth_c();
-                    } else if (shape == 'D') {
-                        this.mouth_d();
-                    } else if (shape == 'E') {
-                        this.mouth_e();
-                    } else if (shape == 'F') {
-                        this.mouth_f();
-                    } else if (shape == 'G') {
-                        this.mouth_g();
-                    } else if (shape == 'H') {
-                        this.mouth_h();
-                    } else if (shape == 'X') {
-                        this.mouth_x();
-                    } else {
-                        this.mouth_a();
+                        if (shape == 'A') {
+                            this.mouth_a();
+                        } else if (shape == 'B') {
+                            this.mouth_b();
+                        } else if (shape == 'C') {
+                            this.mouth_c();
+                        } else if (shape == 'D') {
+                            this.mouth_d();
+                        } else if (shape == 'E') {
+                            this.mouth_e();
+                        } else if (shape == 'F') {
+                            this.mouth_f();
+                        } else if (shape == 'G') {
+                            this.mouth_g();
+                        } else if (shape == 'H') {
+                            this.mouth_h();
+                        } else if (shape == 'X') {
+                            this.mouth_x();
+                        } else {
+                            this.normal();
+                        }
                     }
                 });
             });
-            this.emotion_neutral_mouth();
-            this.emotion_neutral();
+            audioPlayer.addEventListener("ended", () => {
+                this.emotion_neutral_mouth();
+                this.emotion_neutral();
+            });
         },
 
 
@@ -721,7 +727,6 @@ export default {
             const blob = new Blob([msg], { type: "audio/wav" });
             this.linkAudio = window.URL.createObjectURL(blob);
             this.syncAudioText();
-
         });
 
         // Emote emotion(eyes) and lip sync
@@ -733,6 +738,11 @@ export default {
         socket.on('full_emotion_recreation', emotion => {
             this.emotion_recreation(emotion)
         });
+
+        socket.on('toggle_emoji_circle', emotion => {
+            this.emoji_visibility = !this.emoji_visibility;
+            console.log(this.emoji_visibility)
+        });
     },
 
     data() {
@@ -741,7 +751,7 @@ export default {
             metadata: null,
             linkAudio: null,
             timer: '',
-
+            emoji_visibility: false,
         }
     },
     created() {
@@ -899,13 +909,6 @@ export default {
     opacity: 0;
 }
 
-#controls {
-    width: 100%;
-    padding: 20px 0;
-    position: absolute;
-    left: 0;
-    z-index: 102;
-}
 
 button {
     /*padding: 16px 30px;*/
@@ -915,44 +918,51 @@ button {
     font-size: 30px;
 }
 
-#titleBox {
-    width: 100%;
-    padding: 20px 0;
-    /*background: #262626;*/
-    color: white;
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 101;
-}
-
-h1,
-p {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 700;
-    margin: 0;
-    padding: 0;
-    line-height: 1.2;
-}
-
-h1 {
-    font-size: 2.5em;
-}
-
-h1,
-p span {
-    color: #88ce02;
-}
-
-a {
-    color: #fff;
-}
 
 audio {
     visibility: hidden;
     opacity: 0;
     width: 0;
     height: 0;
+}
+.emoj{
+    background-color: solid;
+    border: 10px;
+    position: absolute;
+    z-index: 1;
+    background: Transparent;
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;
+}
+
+.emoj:nth-child(2) {
+    bottom: 65%;
+    left: -5%;
+}
+
+.emoj:nth-child(3) {
+    bottom: 25%;
+    left: 10%;
+}
+
+.emoj:nth-child(4) {
+    bottom: 10%;
+    left: 31%;
+}
+
+.emoj:nth-child(5) {
+    bottom: 10%;
+    left: 54%;
+}
+
+.emoj:nth-child(6) {
+    bottom: 25%;
+    left: 75%;
+}
+
+.emoj:nth-child(7) {
+    bottom: 65%;
+    left: 92%;
 }
 </style>

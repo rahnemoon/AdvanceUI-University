@@ -13,6 +13,9 @@
         <button class="btn" @click="send_reaction('Surprised')">
             <img src="../assets/mini-emoji/Surprised.svg">
         </button>
+        <button class="btn" @click="show_circle_emoji_childside()" style="width: 100px; height: 100px;">
+            <img src="../assets/unicorn.svg">
+        </button>
         <button class="btn" @click="send_reaction('Anger')">
             <img src="../assets/mini-emoji/Anger.svg">
         </button>
@@ -53,6 +56,13 @@ export default {
         send_reaction(reaction) {
             const url = "http://localhost:5000/selected_reaction";
             var msg = { reaction: reaction };
+            axios.post(url, msg)
+                .catch((error) => { console.log(error); });
+
+        },
+        show_circle_emoji_childside() {
+            const url = "http://localhost:5000/show_circle_emoji";
+            var msg = { visibility: 'signal'};
             axios.post(url, msg)
                 .catch((error) => { console.log(error); });
 

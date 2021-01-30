@@ -28,6 +28,10 @@ CHECK_EMOTION_SEND = False
 global CHECK_QUICK_REACTION_SEND
 CHECK_QUICK_REACTION_SEND = False
 
+global CHECK_EMOJI_CIRCLE_SIGNAL
+CHECK_EMOJI_CIRCLE_SIGNAL = False
+
+
 # Instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -211,6 +215,18 @@ def receive_reaction():
 
     return jsonify(response_obj)
 
+
+@app.route('/show_circle_emoji', methods=['POST'])
+def show_circle_emoji():
+    global CHECK_EMOJI_CIRCLE_SIGNAL
+    response_obj = {"status": "successful"}
+    if request.method == "POST":
+        CHECK_EMOJI_CIRCLE_SIGNAL = True
+    else:
+        response_obj["status"] = "failed"
+
+    return jsonify(response_obj)
+
 # reading json file(visemes)
 
 
@@ -235,6 +251,7 @@ def send_json(message):
     global CHECK_EMOTION_SEND
     global CHECK_QUICK_REACTION_SEND
     global SELECTED_QUICK_REACTION
+    global CHECK_EMOJI_CIRCLE_SIGNAL
 
     # this condition handles emitting of a audio, visemes and emotion
     if CHECK_FILES_SEND == True:
@@ -268,6 +285,10 @@ def send_json(message):
         emit('send_emotion', emotion)
 
         CHECK_QUICK_REACTION_SEND = False
+
+    if CHECK_EMOJI_CIRCLE_SIGNAL == True:
+        emit('toggle_emoji_circle', 'signal')
+        CHECK_EMOJI_CIRCLE_SIGNAL = False
 
 
 if __name__ == '__main__':
