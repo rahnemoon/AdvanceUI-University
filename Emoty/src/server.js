@@ -18,7 +18,7 @@ webSocket.on('request', (req) => {
 
         const user = findUser(data.username)
 
-        switch(data.type) {
+        switch (data.type) {
             case "store_user":
 
                 if (user != null) {
@@ -26,8 +26,8 @@ webSocket.on('request', (req) => {
                 }
 
                 const newUser = {
-                     conn: connection,
-                     username: data.username
+                    conn: connection,
+                    username: data.username
                 }
 
                 users.push(newUser)
@@ -111,7 +111,7 @@ function sendData(data, conn) {
 }
 
 function findUser(username) {
-    for (let i = 0;i < users.length;i++) {
+    for (let i = 0; i < users.length; i++) {
         if (users[i].username == username)
             return users[i]
     }

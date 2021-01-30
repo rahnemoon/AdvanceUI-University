@@ -1,24 +1,18 @@
 <template>
-  <div class="has-background-grey-lighter" id="app">
-    <router-view/>
-  </div>
+    <div class="has-background-grey-lighter" id="app">
+        <router-view />
+    </div>
 </template>
-
 <script>
-
-
 export default {
-  name: 'App',
-  components: {
-  }
+    name: 'App',
+    components: {}
 }
 </script>
-
 <style>
-#app{
-  width: 100vw;
-  height: 100vh;
-  
-}
+#app {
+    width: 100vw;
+    height: 100vh;
 
+}
 </style>

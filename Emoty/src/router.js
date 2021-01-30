@@ -7,19 +7,18 @@ import Therapist from './components/Therapist.vue'
 Vue.use(Router);
 
 export default new Router({
-      mode: 'history',
-      base: process.env.BASE_URL,
-      routes: [
-        {
-          path: '/th',
-          name: 'Therapist',
-          component: Therapist,
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [{
+            path: '/th',
+            name: 'Therapist',
+            component: Therapist,
         },
 
         {
             path: '/ch',
             name: 'Child',
             component: Child,
-          },
-      ],
-    });
+        },
+    ],
+});
