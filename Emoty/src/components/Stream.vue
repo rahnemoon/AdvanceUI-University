@@ -2,8 +2,6 @@
     <div class='column is-9 set-height mb-3'>
         <ScreenOnStream />
         <video ref="video_re" id="remote-video" autoplay></video>
-        <button v-on:click='joinCall()'>start call</button>
-        <!-- <video ref="video_lo" muted id="local-video" autoplay></video> -->
     </div>
 </template>
 <script>
@@ -25,6 +23,16 @@ export default {
         ScreenOnStream
     },
     methods: {
+        receive_start_session() {
+            this.$eventHub.$on('start_session', this.start_call);
+            console.log('start_session')
+
+        },
+        start_call(msg){
+            if (msg == 'start') {
+                this.joinCall()
+            }
+        },
         joinCall() {
             navigator.mediaDevices.getUserMedia({
                 audio: false,
@@ -105,9 +113,7 @@ export default {
         webSocketCall.onmessage = (event) => {
             this.handleSignallingCall(JSON.parse(event.data))
         };
-        webSocketScreen.onmessage = (event) => {
-            this.handleSignallingScreen(JSON.parse(event.data))
-        };
+        this.receive_start_session();
     },
 }
 </script>

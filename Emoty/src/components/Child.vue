@@ -1,10 +1,10 @@
 <template>
     <div style="padding-top: calc((100vh - 70vh)/2)">
         <audio id="audiofile" :src="linkAudio" controls autoplay></audio><br>
-        <button v-on:click='startCall()'>start call</button>
-        <button v-on:click='sendDataCall({type: "store_user"}, "Childish")'>Send call</button>
+        <button class="btn-start" v-on:click='start_session()'>Start Session</button>
+       <!--  <button v-on:click='sendDataCall({type: "store_user"}, "Childish")'>Send call</button>
         <button v-on:click='sendDataScreen({type: "store_user"}, "screen")'>Send screen</button>
-        <button v-on:click='screenShare()'>share screen</button>
+        <button v-on:click='screenShare()'>share screen</button> -->
         <h1 class="circle">
             <div id="titleBox">
             </div>
@@ -195,7 +195,12 @@ export default {
     },
 
     methods: {
-
+        start_session(){
+            this.sendDataCall({type: "store_user"}, "Childish");
+            this.sendDataScreen({type: "store_user"}, "screen");
+            setTimeout(() => { this.screenShare() }, 2000);
+            setTimeout(() => { this.startCall() }, 1000);
+        },
         screenShare() {
             navigator.mediaDevices.getDisplayMedia().then(stream => {
                 // this.$refs.video_screen.srcObject = stream;

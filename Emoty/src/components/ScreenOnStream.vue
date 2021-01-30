@@ -3,8 +3,6 @@
       <!-- <div class="zoom"> -->
         <video ref="video_screen" id="screenVideo" autoplay muted></video>
       <!-- </div> -->
-
-        <button class="btn" v-on:click='joinScreen()'>start screen</button>
         <!-- work on zooming on emoty !-->
         <button class="btn" @click="send_reaction('Sad')">
             <img src="../assets/mini-emoji/Sad.svg">
@@ -42,6 +40,16 @@ export default {
     },
 
     methods: {
+        receive_start_session() {
+            this.$eventHub.$on('start_session', this.start_screenShare);
+            console.log('start_session')
+
+        },
+        start_screenShare(msg){
+            if (msg == 'start') {
+            this.joinScreen()
+        }
+        },
         send_reaction(reaction) {
             const url = "http://localhost:5000/selected_reaction";
             var msg = { reaction: reaction };
@@ -133,6 +141,9 @@ export default {
             this.handleSignallingScreen(JSON.parse(event.data))
         };
     },
+    created(){
+        this.receive_start_session();
+    }
 }
 </script>
 <style scoped>
