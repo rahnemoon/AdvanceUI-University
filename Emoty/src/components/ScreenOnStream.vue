@@ -1,34 +1,35 @@
 <template>
     <div class='set-size'>
-      <!-- <div class="zoom"> -->
-        <video ref="video_screen" id="screenVideo" autoplay muted></video>
-      <!-- </div> -->
-        <!-- work on zooming on emoty !-->
-        <button class="btn" @click="send_reaction('Sad')">
-            <img src="../assets/mini-emoji/Sad.svg">
+      <div class="oval has-background-grey-lighter"> 
+        <video ref="video_screen" class="zoom" id="screenVideo" autoplay muted></video>
+      </div>
+      
+        <button class="btn" @click="send_reaction('Sad')" aria-label="Sad" data-microtip-position="left" role="tooltip">
+            <img src="../assets/mini-emoji/Sad.svg" >
         </button>
-        <button class="btn" @click="send_reaction('Happy')">
+        <button class="btn" @click="send_reaction('Happy')" aria-label="Happy" data-microtip-position="left" role="tooltip">
             <img src="../assets/mini-emoji/Happy.svg">
         </button>
-        <button class="btn" @click="send_reaction('Surprised')">
+        <button class="btn" @click="send_reaction('Surprised')" aria-label="Surprised" data-microtip-position="left" role="tooltip">
             <img src="../assets/mini-emoji/Surprised.svg">
         </button>
-        <button class="btn" @click="show_circle_emoji_childside()" style="width: 100px; height: 100px;">
+        <button class="btn" @click="show_circle_emoji_childside()" style="width: 85px; height: 85px;" aria-label="Toggle circle emojis" data-microtip-position="bottom" role="tooltip">
             <img src="../assets/unicorn.svg">
         </button>
-        <button class="btn" @click="send_reaction('Anger')">
+        <button class="btn" @click="send_reaction('Anger')" aria-label="Angry" data-microtip-position="right" role="tooltip">
             <img src="../assets/mini-emoji/Anger.svg">
         </button>
-        <button class="btn" @click="send_reaction('Fear')">
+        <button class="btn" @click="send_reaction('Fear')" aria-label="Fear" data-microtip-position="right" role="tooltip">
             <img src="../assets/mini-emoji/Fear.svg">
         </button>
-        <button class="btn" @click="send_reaction('Disgust')">
+        <button class="btn" @click="send_reaction('Disgust')" aria-label="Disgust" data-microtip-position="right" role="tooltip">
             <img src="../assets/mini-emoji/Disgust.svg">
         </button>
     </div>
-    </div>
 </template>
 <script>
+
+
 import axios from 'axios';
 const webSocketScreen = new WebSocket("ws://127.0.0.1:3002");
 
@@ -157,10 +158,19 @@ export default {
 }
 </script>
 <style scoped>
+[arial-label][role~='tooltip']::after{
+    background: brown  !important;
+    color: chartreuse !important;
+}
+
+
+
+
+
 .btn {
     background-color: solid;
     border: 10px;
-    position: absolute;
+    position: absolute !important;
     z-index: 1;
     background: Transparent;
     border-radius: 50px;
@@ -192,26 +202,31 @@ export default {
 }
 
 .btn:nth-child(3) {
-    bottom: 25%;
-    left: 10%;
+    bottom: 28%;
+    left: 5%;
 }
 
 .btn:nth-child(4) {
     bottom: 10%;
-    left: 31%;
+    left: 22%;
 }
 
 .btn:nth-child(5) {
-    bottom: 10%;
-    left: 54%;
+    bottom: 0%;
+    left: 40.5%;
 }
 
 .btn:nth-child(6) {
-    bottom: 25%;
-    left: 75%;
+    bottom: 10%;
+    left: 63%;
 }
 
 .btn:nth-child(7) {
+    bottom: 28%;
+    left: 80%;
+}
+
+.btn:nth-child(8) {
     bottom: 65%;
     left: 92%;
 }
@@ -245,29 +260,29 @@ export default {
     }
 }
 .zoom{
-  -moz-transform:scale(3);
-  -webkit-transform:scale(3);
-  -o-transform:scale(3);
-  -ms-transform:scale(3);
-  transform:scale(3);
+  -moz-transform:scale(6);
+  -webkit-transform:scale(6);
+  -o-transform:scale(6);
+  -ms-transform:scale(6);
+  transform:scale(6);
 }
 video {
-
-    /*transform: translate(0%, 0%);*/
-    /*zoom: 500%;*/
+    padding: 0;
+    height: 45%;
+    width: 100%;
+}
+.oval{
     background: white;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    overflow: hidden;
 
-    box-sizing: border-box;
-    border-radius: 10px;
-    padding: 0;
-
-    height: 80%;
-    width: 100%;
+    position: absolute;
     border-radius: 50% / 100%;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    height: 80%;
+    width: 100%;
 }
 </style>

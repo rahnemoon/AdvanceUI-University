@@ -1,10 +1,14 @@
 <template>
-    <div style="padding-top: calc((100vh - 70vh)/2)">
+    <div>
+    <button class="button is-light is-small is-light is-rounded mt-2 ml-2" 
+    aria-label="Start streaming" data-microtip-position="right" role="tooltip" v-on:click='start_session()'>Start Session</button>
+
+    <div style="padding-top: calc((100vh - 90vh)/2)">
         <audio id="audiofile" :src="linkAudio" controls autoplay></audio><br>
-        <button class="btn-start" v-on:click='start_session()'>Start Session</button>
 
         <h1 class="circle">
-            <div v-if="emoji_visibility" id="hide">
+            
+<div v-if="emoji_visibility" id="hide">
                 <img :class="[ sad_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Sad.svg">
                 <img :class="[ happy_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Happy.svg">
                 <img :class="[ surprised_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Surprised.svg">
@@ -13,8 +17,7 @@
                 <img :class="[ disgust_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Disgust.svg">
             </div>
 
-
-            <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="emoty_centered" width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path id="hair" d="M254.07 167.395L252.573 167.498L254.07 167.395ZM261.009 156.956C261.595 157.542 262.544 157.542 263.13 156.956C263.716 156.37 263.716 155.42 263.13 154.834L261.009 156.956ZM250.668 158.729C251.497 158.729 252.168 158.058 252.168 157.229C252.168 156.401 251.497 155.729 250.668 155.729L250.668 158.729ZM256 175.5C254.573 175.038 254.573 175.038 254.573 175.037C254.573 175.037 254.574 175.036 254.574 175.035C254.574 175.034 254.574 175.033 254.575 175.032C254.575 175.031 254.576 175.029 254.576 175.027C254.577 175.024 254.578 175.022 254.579 175.02C254.58 175.016 254.581 175.014 254.581 175.013C254.581 175.013 254.581 175.015 254.58 175.017C254.569 175.041 254.584 174.996 254.645 174.921C254.664 174.898 254.972 174.501 255.584 174.494C256.266 174.487 256.577 174.957 256.584 174.968C256.613 175.01 256.562 174.945 256.472 174.638C256.389 174.352 256.292 173.925 256.188 173.307C255.981 172.072 255.765 170.17 255.566 167.292L252.573 167.498C252.775 170.42 252.999 172.431 253.229 173.803C253.344 174.489 253.464 175.039 253.592 175.477C253.713 175.893 253.866 176.297 254.085 176.627C254.284 176.926 254.773 177.503 255.617 177.494C256.389 177.486 256.839 176.978 256.977 176.808C257.156 176.587 257.266 176.36 257.32 176.238C257.351 176.167 257.376 176.106 257.393 176.06C257.402 176.036 257.409 176.016 257.414 176C257.417 175.991 257.42 175.984 257.422 175.978C257.423 175.975 257.424 175.972 257.425 175.969C257.425 175.968 257.426 175.966 257.426 175.965C257.426 175.964 257.426 175.964 257.427 175.963C257.427 175.962 257.427 175.962 256 175.5ZM255.566 167.292C255.182 161.72 256.532 158.741 257.878 157.433C259.214 156.134 260.465 156.412 261.009 156.956L263.13 154.834C261.174 152.878 258.025 153.106 255.787 155.282C253.557 157.449 252.157 161.47 252.573 167.498L255.566 167.292ZM254.128 169.887C249.917 166.219 248.765 163.157 248.792 161.281C248.818 159.418 249.899 158.729 250.668 158.729L250.668 155.729C247.902 155.729 245.836 158.117 245.792 161.239C245.748 164.348 247.601 168.18 252.158 172.149L254.128 169.887Z" fill="black" />
                 <g id="body" ref="body">
                     <path d="M329 246C329 204.579 295.421 171 254 171C212.579 171 179 204.579 179 246V321C179 334.807 190.193 346 204 346C213.765 346 222.161 339.214 230.348 332.598C233.737 329.859 237.091 327.149 240.49 324.961C244.386 322.454 249.023 321 254 321C258.977 321 263.614 322.454 267.51 324.961C270.909 327.149 274.263 329.859 277.652 332.598C285.839 339.214 294.235 346 304 346C317.807 346 329 334.807 329 321V246Z" fill="#FBB03B" />
@@ -171,6 +174,7 @@
             </svg>
         </h1>
     </div>
+    </div>
 </template>
 <script>
 import io from 'socket.io-client';
@@ -184,9 +188,7 @@ var socket = io.connect("http://localhost:5000", {
   timeout: 5000,
 });
 
-//const WebSocket = require('ws');
-//var W3CWebSocket = require('websocket').w3cwebsocket;
-//const webSocket = new W3CWebSocket("ws://127.0.0.1:3002");
+
 const webSocketCall = new WebSocket("ws://127.0.0.1:3002");
 const webSocketScreen = new WebSocket("ws://127.0.0.1:3002");
 
@@ -210,10 +212,8 @@ export default {
         },
         screenShare() {
             navigator.mediaDevices.getDisplayMedia().then(stream => {
-                // this.$refs.video_screen.srcObject = stream;
                 console.log(stream)
                 localStream = stream
-                // this.$refs.video_lo.srcObject = stream;
                 let configuration = {
                     iceServers: [{
                         "urls": ["stun:stun.l.google.com:19302",
@@ -226,8 +226,6 @@ export default {
                 peerScreen.addStream(stream)
                 console.log(peerScreen)
                 peerScreen.onaddstream = (e) => {
-
-                    // this.$refs.video_re.srcObject = e.stream;
 
                 }
 
@@ -263,10 +261,7 @@ export default {
 
         createAndSendOfferScreen(id) {
             peerScreen.createOffer((offer) => {
-                console.log("salar");
                 console.log(offer);
-                console.log("salar");
-
                 this.sendDataScreen({
                     type: "store_offer",
                     offer: offer
@@ -292,7 +287,6 @@ export default {
                 console.log(stream)
                 localStream = stream
 
-                // this.$refs.video_lo.srcObject = stream;
 
                 let configuration = {
                     iceServers: [{
@@ -307,8 +301,6 @@ export default {
                 console.log(peerCall)
                 peerCall.onaddstream = (e) => {
 
-                    // this.$refs.video_re.srcObject = e.stream;
-
                 }
 
                 peerCall.onicecandidate = ((e) => {
@@ -321,8 +313,6 @@ export default {
                         candidate: e.candidate
                     }, child_id)
                 })
-                console.log("erfan")
-
                 this.createAndSendOfferCall(child_id);
             }, (error) => {
                 console.log(error)
@@ -343,10 +333,7 @@ export default {
 
         createAndSendOfferCall(id) {
             peerCall.createOffer((offer) => {
-                console.log("salar");
                 console.log(offer);
-                console.log("salar");
-
                 this.sendDataCall({
                     type: "store_offer",
                     offer: offer
@@ -362,6 +349,7 @@ export default {
             data.username = id;
             webSocketCall.send(JSON.stringify(data));
         },
+
 
         // Recreation of emotion on Emoty (complete emotion mouth and eyes)
         emotion_recreation(emotion) {
@@ -598,77 +586,77 @@ export default {
             const tl = new TimelineLite();
             tl
                 .add("mouth_a", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#ma1", fill: "black" }, "mouth_a")
-                .to("#nem2", 0.0, { morphSVG: "#ma2", fill: "black" }, "mouth_a")
-                .to("#nem3", 0.0, { morphSVG: "#ma3", fill: "black" }, "mouth_a")
+                .to("#nem1", 0.01, { morphSVG: "#ma1", fill: "black" }, "mouth_a")
+                .to("#nem2", 0.01, { morphSVG: "#ma2", fill: "black" }, "mouth_a")
+                .to("#nem3", 0.01, { morphSVG: "#ma3", fill: "black" }, "mouth_a")
         },
 
         mouth_b() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_b", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#mb1", fill: "black" }, "mouth_b")
-                .to("#nem2", 0.0, { morphSVG: "#mb2", fill: "white" }, "mouth_b")
-                .to("#nem3", 0.0, { morphSVG: "#mb3", fill: "white" }, "mouth_b")
+                .to("#nem1", 0.01, { morphSVG: "#mb1", fill: "black" }, "mouth_b")
+                .to("#nem2", 0.01, { morphSVG: "#mb2", fill: "white" }, "mouth_b")
+                .to("#nem3", 0.01, { morphSVG: "#mb3", fill: "white" }, "mouth_b")
         },
         mouth_c() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_c", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#mc1", fill: "black" }, "mouth_c")
-                .to("#nem2", 0.0, { morphSVG: "#mc2", fill: "white" }, "mouth_c")
-                .to("#nem3", 0.0, { morphSVG: "#mc3", fill: "white" }, "mouth_c")
+                .to("#nem1", 0.01, { morphSVG: "#mc1", fill: "black" }, "mouth_c")
+                .to("#nem2", 0.01, { morphSVG: "#mc2", fill: "white" }, "mouth_c")
+                .to("#nem3", 0.01, { morphSVG: "#mc3", fill: "white" }, "mouth_c")
         },
         mouth_d() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_d", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#md1", fill: "black" }, "mouth_d")
-                .to("#nem2", 0.0, { morphSVG: "#md2", fill: "#D85B5B" }, "mouth_d")
-                .to("#nem3", 0.0, { morphSVG: "#md3", fill: "white" }, "mouth_d")
+                .to("#nem1", 0.01, { morphSVG: "#md1", fill: "black" }, "mouth_d")
+                .to("#nem2", 0.01, { morphSVG: "#md2", fill: "#D85B5B" }, "mouth_d")
+                .to("#nem3", 0.01, { morphSVG: "#md3", fill: "white" }, "mouth_d")
         },
         mouth_e() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_e", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#me1", fill: "black" }, "mouth_e")
-                .to("#nem2", 0.0, { morphSVG: "#me2", fill: "#D85B5B" }, "mouth_e")
-                .to("#nem3", 0.0, { morphSVG: "#me3", fill: "white" }, "mouth_e")
+                .to("#nem1", 0.01, { morphSVG: "#me1", fill: "black" }, "mouth_e")
+                .to("#nem2", 0.01, { morphSVG: "#me2", fill: "#D85B5B" }, "mouth_e")
+                .to("#nem3", 0.01, { morphSVG: "#me3", fill: "white" }, "mouth_e")
         },
         mouth_f() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_f", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#mf1", fill: "black" }, "mouth_f")
-                .to("#nem2", 0.0, { morphSVG: "#mf2", fill: "black" }, "mouth_f")
-                .to("#nem3", 0.0, { morphSVG: "#mf3", fill: "black" }, "mouth_f")
+                .to("#nem1", 0.01, { morphSVG: "#mf1", fill: "black" }, "mouth_f")
+                .to("#nem2", 0.01, { morphSVG: "#mf2", fill: "black" }, "mouth_f")
+                .to("#nem3", 0.01, { morphSVG: "#mf3", fill: "black" }, "mouth_f")
         },
 
         mouth_g() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_g", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#mg1", fill: "black" }, "mouth_g")
-                .to("#nem2", 0.0, { morphSVG: "#mg2", fill: "white" }, "mouth_g")
-                .to("#nem3", 0.0, { morphSVG: "#mg3", fill: "black" }, "mouth_g")
+                .to("#nem1", 0.01, { morphSVG: "#mg1", fill: "black" }, "mouth_g")
+                .to("#nem2", 0.01, { morphSVG: "#mg2", fill: "white" }, "mouth_g")
+                .to("#nem3", 0.01, { morphSVG: "#mg3", fill: "black" }, "mouth_g")
         },
 
         mouth_h() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_h", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#mh1", fill: "black" }, "mouth_h")
-                .to("#nem2", 0.0, { morphSVG: "#mh2", fill: "#D85B5B" }, "mouth_h")
-                .to("#nem3", 0.0, { morphSVG: "#mh3", fill: "white" }, "mouth_h")
+                .to("#nem1", 0.01, { morphSVG: "#mh1", fill: "black" }, "mouth_h")
+                .to("#nem2", 0.01, { morphSVG: "#mh2", fill: "#D85B5B" }, "mouth_h")
+                .to("#nem3", 0.01, { morphSVG: "#mh3", fill: "white" }, "mouth_h")
         },
 
         mouth_x() {
             const tl = new TimelineLite();
             tl
                 .add("mouth_x", "+=0.01")
-                .to("#nem1", 0.0, { morphSVG: "#mx1", fill: "black" }, "mouth_x")
-                .to("#nem2", 0.0, { morphSVG: "#mx2", fill: "black" }, "mouth_x")
-                .to("#nem3", 0.0, { morphSVG: "#mx3", fill: "black" }, "mouth_x")
+                .to("#nem1", 0.01, { morphSVG: "#mx1", fill: "black" }, "mouth_x")
+                .to("#nem2", 0.01, { morphSVG: "#mx2", fill: "black" }, "mouth_x")
+                .to("#nem3", 0.01, { morphSVG: "#mx3", fill: "black" }, "mouth_x")
         },
 
         syncAudioText() {
@@ -759,9 +747,20 @@ export default {
 
         socket.on('toggle_emoji_circle', emotion => {
             this.emoji_visibility = !this.emoji_visibility;
+            if (this.emoji_visibility == false){
+                this.emotion_neutral();
+                this.emotion_neutral_mouth();
+
+            this.sad_mini_emoji=false;
+            this.happy_mini_emoji=false;
+            this.surprised_mini_emoji=false;
+            this.anger_mini_emoji=false;
+            this.fear_mini_emoji=false;
+            this.disgust_mini_emoji=false;
+            }
             console.log(this.emoji_visibility)
         });
-        this.timer = setInterval(this.wakeup_server_to_send_data, 1000)
+        this.timer = setInterval(this.wakeup_server_to_send_data, 3000)
     },
 
     data() {
@@ -771,13 +770,13 @@ export default {
             linkAudio: null,
             timer: null,
             emoji_visibility: false,
-            // selected_mini_emoji: null,
-            sad_mini_emoji: true,
-            happy_mini_emoji: true,
-            surprised_mini_emoji: true,
-            anger_mini_emoji: true,
-            fear_mini_emoji: true,
-            disgust_mini_emoji: true,
+
+            sad_mini_emoji: false,
+            happy_mini_emoji: false,
+            surprised_mini_emoji: false,
+            anger_mini_emoji: false,
+            fear_mini_emoji: false,
+            disgust_mini_emoji: false,
         }
     },
     created() {
@@ -973,40 +972,43 @@ audio {
     background-color: solid;
     border: 10px;
     position: absolute;
-    z-index: 1;
     background: Transparent;
     border-radius: 50px;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
+}
+
+.emoj:nth-child(1) {
+    bottom: 70%;
+    left: 35%;
 }
 
 .emoj:nth-child(2) {
-    bottom: 65%;
-    left: -5%;
+    bottom: 45%;
+    left: 29%;
 }
 
 .emoj:nth-child(3) {
-    bottom: 25%;
-    left: 10%;
+    bottom: 20%;
+    left: 33%;
 }
 
 .emoj:nth-child(4) {
-    bottom: 10%;
-    left: 31%;
+    bottom: 70%;
+    left: 58%;
 }
 
 .emoj:nth-child(5) {
-    bottom: 10%;
-    left: 54%;
+    bottom: 45%;
+    left: 64%;
 }
 
 .emoj:nth-child(6) {
-    bottom: 25%;
-    left: 75%;
+    bottom: 20%;
+    left: 60%;
 }
-
-.emoj:nth-child(7) {
-    bottom: 65%;
-    left: 92%;
+.emoty_centered{
+    width: inherit;
+    height: inherit;
 }
 </style>

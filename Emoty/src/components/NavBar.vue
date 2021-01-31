@@ -3,13 +3,20 @@
         <div class="navbar-brand">
             <div class="navbar-item mr-2">
 
-                <img src="../assets/person.png" width="30" height="50" style="float: right">
+                <img src="../assets/person.png" width="30" height="50">
                 <p class="mr-3">Sophie</p>
             </div>
-            <div class="navbar-item ml-2">
-                <button v-on:click='start_session()' width="30" height="50" style="float: left" >Start Session</button>
-            </div>
+            
         </div>
+          <div class="navbar-menu">
+                <div class="navbar-start">
+                <div class="navbar-item ml-2">
+                    <button class="button is-light is-small is-rounded" style="font-weight:bold !important;" 
+                    aria-label="After starting session from child side this has to be pressed" data-microtip-position="right" role="tooltip" v-on:click='start_session()'>Start Session</button>
+
+            </div>
+                </div>
+                </div>
     </nav>
 </template>
 <script>

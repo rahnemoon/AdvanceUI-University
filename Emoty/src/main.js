@@ -2,9 +2,7 @@ import 'bulma/css/bulma.css';
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router';
-//import './script.js';
-//import './assets/js/Tween.js';
-
+import microtip from 'microtip/microtip.css'
 
 
 Vue.config.productionTip = false
