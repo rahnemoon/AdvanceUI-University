@@ -5,12 +5,12 @@
 
         <h1 class="circle">
             <div v-if="emoji_visibility" id="hide">
-                <img class="emoj" src="../assets/mini-emoji/Sad.svg">
-                <img class="emoj" src="../assets/mini-emoji/Happy.svg">
-                <img class="emoj" src="../assets/mini-emoji/Surprised.svg">
-                <img class="emoj" src="../assets/mini-emoji/Anger.svg">
-                <img class="emoj" src="../assets/mini-emoji/Fear.svg">
-                <img class="emoj" src="../assets/mini-emoji/Disgust.svg">
+                <img :class="[ sad_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Sad.svg">
+                <img :class="[ happy_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Happy.svg">
+                <img :class="[ surprised_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Surprised.svg">
+                <img :class="[ anger_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Anger.svg">
+                <img :class="[ fear_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Fear.svg">
+                <img :class="[ disgust_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Disgust.svg">
             </div>
 
 
@@ -178,7 +178,11 @@ import TimelineMax from '../Tween.js';
 import { gsap } from "gsap";
 
 
-var socket = io.connect("http://localhost:5000/lips");
+var socket = io.connect("http://localhost:5000", {
+  reconnectionDelayMax: 2000,
+  reconnectionDelay: 500,
+  timeout: 5000,
+});
 
 //const WebSocket = require('ws');
 //var W3CWebSocket = require('websocket').w3cwebsocket;
@@ -361,6 +365,12 @@ export default {
 
         // Recreation of emotion on Emoty (complete emotion mouth and eyes)
         emotion_recreation(emotion) {
+            this.sad_mini_emoji=true;
+            this.happy_mini_emoji=true;
+            this.surprised_mini_emoji=true;
+            this.anger_mini_emoji=true;
+            this.fear_mini_emoji=true;
+            this.disgust_mini_emoji=true;
             switch (emotion) {
                 case 'Neutral':
                     this.emotion_neutral();
@@ -369,31 +379,37 @@ export default {
                 case 'Anger':
                     this.emotion_angry();
                     this.emotion_angry_mouth();
+                    this.anger_mini_emoji=false;
                     break;
 
                 case 'Surprised':
                     this.emotion_surprised();
                     this.emotion_surprised_mouth();
+                    this.surprised_mini_emoji=false;
                     break;
 
                 case 'Sad':
                     this.emotion_sad();
                     this.emotion_sad_mouth();
+                    this.sad_mini_emoji=false;
                     break;
 
                 case 'Happy':
                     this.emotion_happy();
                     this.emotion_happy_mouth();
+                    this.happy_mini_emoji=false;
                     break;
 
                 case 'Fear':
                     this.emotion_afraid();
                     this.emotion_afraid_mouth();
+                    this.fear_mini_emoji=false;
                     break;
 
                 case 'Disgust':
                     this.emotion_disgust();
                     this.emotion_disgust_mouth();
+                    this.disgust_mini_emoji=false;
                     break;
 
                 default:
@@ -737,12 +753,15 @@ export default {
         // Emote the full body emotion recearion
         socket.on('full_emotion_recreation', emotion => {
             this.emotion_recreation(emotion)
+            // this.selected_mini_emoji = emotion;
+            console.log(emotion);
         });
 
         socket.on('toggle_emoji_circle', emotion => {
             this.emoji_visibility = !this.emoji_visibility;
             console.log(this.emoji_visibility)
         });
+        this.timer = setInterval(this.wakeup_server_to_send_data, 1000)
     },
 
     data() {
@@ -750,8 +769,15 @@ export default {
             mouthCues: null,
             metadata: null,
             linkAudio: null,
-            timer: '',
+            timer: null,
             emoji_visibility: false,
+            // selected_mini_emoji: null,
+            sad_mini_emoji: true,
+            happy_mini_emoji: true,
+            surprised_mini_emoji: true,
+            anger_mini_emoji: true,
+            fear_mini_emoji: true,
+            disgust_mini_emoji: true,
         }
     },
     created() {
@@ -759,13 +785,31 @@ export default {
             socket.emit('send_file', { data: 'connected!!!!!!!!!!!' });
         });
 
-        this.wakeup_server_to_send_data();
-        this.timer = setInterval(this.wakeup_server_to_send_data, 3000)
+        // this.wakeup_server_to_send_data();
+        // this.timer = setInterval(this.wakeup_server_to_send_data, 1000)
 
     },
 }
 </script>
 <style scoped>
+
+
+
+@keyframes taadaa {
+  0% {
+    opacity: 100%;
+  }
+
+  100% {
+    opacity: 30%;
+  }
+}
+
+.animation {
+    -webkit-animation: taadaa 3.0s forwards; /* for less modern browsers */
+    animation: taadaa 3.0s forwards;
+  /*animation: taadaa 3s 1;*/
+}
 .circle {
     width: 70vh;
     height: 70vh;
