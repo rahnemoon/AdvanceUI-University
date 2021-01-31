@@ -5,6 +5,7 @@ import os
 import subprocess
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
+from engineio.payload import Payload
 import platform
 
 DEBUG = True
@@ -35,6 +36,7 @@ CHECK_EMOJI_CIRCLE_SIGNAL = False
 # Instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
+Payload.max_decode_packets = 50
 socketio = SocketIO(app, engineio_logger=True)
 socketio.init_app(app, cors_allowed_origins="*")
 
@@ -244,7 +246,7 @@ def read_generated_audio():
 
 
 # socket for sending files(audio, visemes, emotions)
-@socketio.on('send_file', namespace='/lips')
+@socketio.on('send_file', namespace='/')
 def send_json(message):
     global CHECK_FILES_SEND
     global SELECTED_EMOTION
