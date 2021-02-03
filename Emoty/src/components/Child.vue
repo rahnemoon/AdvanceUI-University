@@ -73,10 +73,10 @@
                 <!--> Paths for happy emotion
                 <!-->
                 <g id="happy">
-                    <path id="helo" d="M246 223C246 232.941 237.941 241 228 241C218.059 241 210 232.941 210 223C210 213.059 218.059 205 228 205C237.941 205 246 213.059 246 223Z" fill="white" />
-                    <path id="heli" d="M238 223C238 228.523 233.523 233 228 233C222.477 233 218 228.523 218 223C218 217.477 222.477 213 228 213C233.523 213 238 217.477 238 223Z" fill="black" />
-                    <path id="hero" d="M298 223C298 232.941 289.941 241 280 241C270.059 241 262 232.941 262 223C262 213.059 270.059 205 280 205C289.941 205 298 213.059 298 223Z" fill="white" />
-                    <path id="heri" d="M290 223C290 228.523 285.523 233 280 233C274.477 233 270 228.523 270 223C270 217.477 274.477 213 280 213C285.523 213 290 217.477 290 223Z" fill="black" />
+                    <path id="hero" d="M295.78 231.667C297.195 229.096 298 226.142 298 223C298 213.059 289.941 205 280 205C270.059 205 262 213.059 262 223C262 226.142 262.805 229.096 264.22 231.667C267.282 228.885 273.201 227 280 227C286.799 227 292.718 228.885 295.78 231.667Z" fill="white"/>
+                    <path id="heri" d="M288.607 228.094C289.492 226.602 290 224.86 290 223C290 217.477 285.523 213 280 213C274.477 213 270 217.477 270 223C270 224.86 270.508 226.602 271.393 228.094C273.95 227.396 276.882 227 280 227C283.118 227 286.05 227.396 288.607 228.094Z" fill="black"/>
+                    <path id="helo" d="M243.78 231.667C245.195 229.096 246 226.142 246 223C246 213.059 237.941 205 228 205C218.059 205 210 213.059 210 223C210 226.142 210.805 229.096 212.22 231.667C215.282 228.885 221.201 227 228 227C234.799 227 240.718 228.885 243.78 231.667Z" fill="white"/>
+                    <path id="heli" d="M236.607 228.094C237.492 226.602 238 224.86 238 223C238 217.477 233.523 213 228 213C222.477 213 218 217.477 218 223C218 224.86 218.508 226.602 219.393 228.094C221.95 227.396 224.882 227 228 227C231.118 227 234.05 227.396 236.607 228.094Z" fill="black"/>
                     <path id="hm1" d="M254.501 289C240.43 289 233.684 281.197 230.513 274.657C227.114 267.645 227.01 260.745 227.01 260.458L227 259.216L228.219 259.483C239.325 261.916 248.757 262.727 256.392 262.727C271.454 262.727 279.523 259.575 279.636 259.534L280.959 259L281 260.417C281.01 260.951 281.258 273.63 273.066 281.998C268.52 286.639 262.27 289 254.501 289Z" fill="black" />
                     <path id="hm2" d="M230.213 268.158H278.081C278.703 265.505 278.915 263.215 278.985 261.844C276.992 262.47 272.89 263.548 266.743 264.195C258.84 265.027 245.968 265.242 229.066 261.68C229.179 263.046 229.469 265.411 230.213 268.158Z" fill="white" />
                     <path id="hm3" d="M268.214 283.426C256.057 274.639 244.478 280.917 240.69 283.474C244.47 285.838 249.083 287.029 254.501 287.029C259.902 287.029 264.498 285.819 268.214 283.426Z" fill="#D85B5B" />
@@ -585,78 +585,78 @@ export default {
         mouth_a() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_a", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#ma1", fill: "black" }, "mouth_a")
-                .to("#nem2", 0.01, { morphSVG: "#ma2", fill: "black" }, "mouth_a")
-                .to("#nem3", 0.01, { morphSVG: "#ma3", fill: "black" }, "mouth_a")
+                .add("mouth_a", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#ma1", fill: "black" }, "mouth_a")
+                .to("#nem2", 0.06, { morphSVG: "#ma2", fill: "black" }, "mouth_a")
+                .to("#nem3", 0.06, { morphSVG: "#ma3", fill: "black" }, "mouth_a")
         },
 
         mouth_b() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_b", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#mb1", fill: "black" }, "mouth_b")
-                .to("#nem2", 0.01, { morphSVG: "#mb2", fill: "white" }, "mouth_b")
-                .to("#nem3", 0.01, { morphSVG: "#mb3", fill: "white" }, "mouth_b")
+                .add("mouth_b", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#mb1", fill: "black" }, "mouth_b")
+                .to("#nem2", 0.06, { morphSVG: "#mb2", fill: "white" }, "mouth_b")
+                .to("#nem3", 0.06, { morphSVG: "#mb3", fill: "white" }, "mouth_b")
         },
         mouth_c() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_c", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#mc1", fill: "black" }, "mouth_c")
-                .to("#nem2", 0.01, { morphSVG: "#mc2", fill: "white" }, "mouth_c")
-                .to("#nem3", 0.01, { morphSVG: "#mc3", fill: "white" }, "mouth_c")
+                .add("mouth_c", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#mc1", fill: "black" }, "mouth_c")
+                .to("#nem2", 0.06, { morphSVG: "#mc2", fill: "white" }, "mouth_c")
+                .to("#nem3", 0.06, { morphSVG: "#mc3", fill: "white" }, "mouth_c")
         },
         mouth_d() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_d", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#md1", fill: "black" }, "mouth_d")
-                .to("#nem2", 0.01, { morphSVG: "#md2", fill: "#D85B5B" }, "mouth_d")
-                .to("#nem3", 0.01, { morphSVG: "#md3", fill: "white" }, "mouth_d")
+                .add("mouth_d", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#md1", fill: "black" }, "mouth_d")
+                .to("#nem2", 0.06, { morphSVG: "#md2", fill: "#D85B5B" }, "mouth_d")
+                .to("#nem3", 0.06, { morphSVG: "#md3", fill: "white" }, "mouth_d")
         },
         mouth_e() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_e", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#me1", fill: "black" }, "mouth_e")
-                .to("#nem2", 0.01, { morphSVG: "#me2", fill: "#D85B5B" }, "mouth_e")
-                .to("#nem3", 0.01, { morphSVG: "#me3", fill: "white" }, "mouth_e")
+                .add("mouth_e", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#me1", fill: "black" }, "mouth_e")
+                .to("#nem2", 0.06, { morphSVG: "#me2", fill: "#D85B5B" }, "mouth_e")
+                .to("#nem3", 0.06, { morphSVG: "#me3", fill: "white" }, "mouth_e")
         },
         mouth_f() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_f", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#mf1", fill: "black" }, "mouth_f")
-                .to("#nem2", 0.01, { morphSVG: "#mf2", fill: "black" }, "mouth_f")
-                .to("#nem3", 0.01, { morphSVG: "#mf3", fill: "black" }, "mouth_f")
+                .add("mouth_f", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#mf1", fill: "black" }, "mouth_f")
+                .to("#nem2", 0.06, { morphSVG: "#mf2", fill: "black" }, "mouth_f")
+                .to("#nem3", 0.06, { morphSVG: "#mf3", fill: "black" }, "mouth_f")
         },
 
         mouth_g() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_g", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#mg1", fill: "black" }, "mouth_g")
-                .to("#nem2", 0.01, { morphSVG: "#mg2", fill: "white" }, "mouth_g")
-                .to("#nem3", 0.01, { morphSVG: "#mg3", fill: "black" }, "mouth_g")
+                .add("mouth_g", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#mg1", fill: "black" }, "mouth_g")
+                .to("#nem2", 0.06, { morphSVG: "#mg2", fill: "white" }, "mouth_g")
+                .to("#nem3", 0.06, { morphSVG: "#mg3", fill: "black" }, "mouth_g")
         },
 
         mouth_h() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_h", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#mh1", fill: "black" }, "mouth_h")
-                .to("#nem2", 0.01, { morphSVG: "#mh2", fill: "#D85B5B" }, "mouth_h")
-                .to("#nem3", 0.01, { morphSVG: "#mh3", fill: "white" }, "mouth_h")
+                .add("mouth_h", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#mh1", fill: "black" }, "mouth_h")
+                .to("#nem2", 0.06, { morphSVG: "#mh2", fill: "#D85B5B" }, "mouth_h")
+                .to("#nem3", 0.06, { morphSVG: "#mh3", fill: "white" }, "mouth_h")
         },
 
         mouth_x() {
             const tl = new TimelineLite();
             tl
-                .add("mouth_x", "+=0.01")
-                .to("#nem1", 0.01, { morphSVG: "#mx1", fill: "black" }, "mouth_x")
-                .to("#nem2", 0.01, { morphSVG: "#mx2", fill: "black" }, "mouth_x")
-                .to("#nem3", 0.01, { morphSVG: "#mx3", fill: "black" }, "mouth_x")
+                .add("mouth_x", "+=0.2")
+                .to("#nem1", 0.06, { morphSVG: "#mx1", fill: "black" }, "mouth_x")
+                .to("#nem2", 0.06, { morphSVG: "#mx2", fill: "black" }, "mouth_x")
+                .to("#nem3", 0.06, { morphSVG: "#mx3", fill: "black" }, "mouth_x")
         },
 
         syncAudioText() {
@@ -687,7 +687,7 @@ export default {
                         } else if (shape == 'X') {
                             this.mouth_x();
                         } else {
-                            this.normal();
+                            this.emotion_neutral_mouth();
                         }
                     }
                 });
@@ -807,7 +807,6 @@ export default {
 .animation {
     -webkit-animation: taadaa 3.0s forwards; /* for less modern browsers */
     animation: taadaa 3.0s forwards;
-  /*animation: taadaa 3s 1;*/
 }
 .circle {
     width: 70vh;

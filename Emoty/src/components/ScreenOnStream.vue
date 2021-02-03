@@ -1,29 +1,38 @@
 <template>
     <div class='set-size'>
-      <div class="oval has-background-grey-lighter"> 
-        <video ref="video_screen" class="zoom" id="screenVideo" autoplay muted></video>
+      <div class="oval has-background-white"> 
+          <div class="circle">
+        <video ref="video_screen" class="zoom mt-2" id="screenVideo" autoplay muted></video>
+        </div>
       </div>
       
         <button class="btn" @click="send_reaction('Sad')" aria-label="Sad" data-microtip-position="left" role="tooltip">
-            <img src="../assets/mini-emoji/Sad.svg" >
+            <img src="../assets/mini-emoji/Sad.svg" :class="[ sad_mini_emoji ? 'animation' : '' ]">
         </button>
         <button class="btn" @click="send_reaction('Happy')" aria-label="Happy" data-microtip-position="left" role="tooltip">
-            <img src="../assets/mini-emoji/Happy.svg">
+            <img src="../assets/mini-emoji/Happy.svg" :class="[ happy_mini_emoji ? 'animation' : '' ]" >
         </button>
-        <button class="btn" @click="send_reaction('Surprised')" aria-label="Surprised" data-microtip-position="left" role="tooltip">
-            <img src="../assets/mini-emoji/Surprised.svg">
+        <button class="btn"  @click="send_reaction('Surprised')" aria-label="Surprised" data-microtip-position="left" role="tooltip">
+            <img src="../assets/mini-emoji/Surprised.svg" :class="[ surprised_mini_emoji ? 'animation' : '' ]">
         </button>
-        <button class="btn" @click="show_circle_emoji_childside()" style="width: 85px; height: 85px;" aria-label="Toggle circle emojis" data-microtip-position="bottom" role="tooltip">
-            <img src="../assets/unicorn.svg">
+        <button class="btn" @click="show_circle_emoji_childside()"  style="width: 50px; height: 50px;" aria-label="Toggle circle emojis" data-microtip-position="bottom" role="tooltip">
+            <div v-if= "!toggle_state">
+                <img src="../assets/mini-emoji/Toggle_off.svg">
+
+            </div>
+            <div v-else >
+                <img src="../assets/mini-emoji/Toggle_on.svg"> 
+            </div>
+            
         </button>
-        <button class="btn" @click="send_reaction('Anger')" aria-label="Angry" data-microtip-position="right" role="tooltip">
-            <img src="../assets/mini-emoji/Anger.svg">
+        <button class="btn"  @click="send_reaction('Anger')" aria-label="Angry" data-microtip-position="right" role="tooltip">
+            <img src="../assets/mini-emoji/Anger.svg" :class="[ anger_mini_emoji ? 'animation' : '' ]">
         </button>
-        <button class="btn" @click="send_reaction('Fear')" aria-label="Fear" data-microtip-position="right" role="tooltip">
-            <img src="../assets/mini-emoji/Fear.svg">
+        <button class="btn" :class="[ afraid_mini_emoji ? 'animation' : '' ]" @click="send_reaction('Fear')" aria-label="Fear" data-microtip-position="right" role="tooltip">
+            <img src="../assets/mini-emoji/Fear.svg" :class="[ fear_mini_emoji ? 'animation' : '' ]">
         </button>
-        <button class="btn" @click="send_reaction('Disgust')" aria-label="Disgust" data-microtip-position="right" role="tooltip">
-            <img src="../assets/mini-emoji/Disgust.svg">
+        <button class="btn"  @click="send_reaction('Disgust')" aria-label="Disgust" data-microtip-position="right" role="tooltip">
+            <img src="../assets/mini-emoji/Disgust.svg" :class="[ disgust_mini_emoji ? 'animation' : '' ]">
         </button>
     </div>
 </template>
@@ -55,10 +64,43 @@ export default {
         }
         },
         send_reaction(reaction) {
+
             const url = "http://localhost:5000/selected_reaction";
             var msg = { reaction: reaction };
             axios.post(url, msg)
                 .catch((error) => { console.log(error); });
+            
+        this.sad_mini_emoji = true;
+        this.happy_mini_emoji= true;
+        this.surprised_mini_emoji= true;
+        this.anger_mini_emoji= true;
+        this.fear_mini_emoji= true;
+        this.disgust_mini_emoji =true;
+
+            switch (reaction) {
+                case 'Anger':
+                    this.anger_mini_emoji=false;
+                    break;
+
+                case 'Surprised':
+                    this.surprised_mini_emoji=false;
+                    break;
+
+                case 'Sad':
+                    this.sad_mini_emoji=false;
+                    break;
+
+                case 'Happy':
+                    this.happy_mini_emoji=false;
+                    break;
+
+                case 'Fear':
+                    this.fear_mini_emoji=false;
+                    break;
+
+                case 'Disgust':
+                    this.disgust_mini_emoji=false;
+            };
 
         },
         show_circle_emoji_childside() {
@@ -66,6 +108,15 @@ export default {
             var msg = { visibility: 'signal'};
             axios.post(url, msg)
                 .catch((error) => { console.log(error); });
+
+            this.toggle_state = !this.toggle_state;
+
+        this.sad_mini_emoji = false;
+        this.happy_mini_emoji= false;
+        this.surprised_mini_emoji= false;
+        this.anger_mini_emoji= false;
+        this.fear_mini_emoji= false;
+        this.disgust_mini_emoji =false;
 
         },
         joinScreen() {
@@ -154,17 +205,37 @@ export default {
     },
     created(){
         this.receive_start_session();
+    },
+
+    data(){
+        return{
+        toggle_state: false,
+        sad_mini_emoji: false,
+        happy_mini_emoji: false,
+        surprised_mini_emoji: false,
+        anger_mini_emoji: false,
+        fear_mini_emoji: false,
+        disgust_mini_emoji: false,
+        }
     }
 }
 </script>
 <style scoped>
-[arial-label][role~='tooltip']::after{
-    background: brown  !important;
-    color: chartreuse !important;
+
+@keyframes taadaa {
+  0% {
+    opacity: 100%;
+  }
+
+  100% {
+    opacity: 30%;
+  }
 }
 
-
-
+.animation {
+    -webkit-animation: taadaa 3.0s forwards; /* for less modern browsers */
+    animation: taadaa 3.0s forwards;
+}
 
 
 .btn {
@@ -196,6 +267,7 @@ export default {
 
 }
 
+
 .btn:nth-child(2) {
     bottom: 65%;
     left: -5%;
@@ -213,7 +285,7 @@ export default {
 
 .btn:nth-child(5) {
     bottom: 0%;
-    left: 40.5%;
+    left: 44%;
 }
 
 .btn:nth-child(6) {
@@ -260,16 +332,25 @@ export default {
     }
 }
 .zoom{
-  -moz-transform:scale(6);
-  -webkit-transform:scale(6);
-  -o-transform:scale(6);
-  -ms-transform:scale(6);
-  transform:scale(6);
+  -moz-transform:scale(7);
+  -webkit-transform:scale(7);
+  -o-transform:scale(7);
+  -ms-transform:scale(7);
+  transform:scale(7);
 }
 video {
     padding: 0;
     height: 45%;
     width: 100%;
+}
+.circle {
+    width: 100px;
+    height: 100px;
+    background: rgb(255, 255, 255);
+    border-radius: 50%;
+    margin: 0px auto;
+    overflow: hidden;
+
 }
 .oval{
     background: white;
