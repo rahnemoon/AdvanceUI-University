@@ -1,11 +1,11 @@
 <template>
     <div class='set-size'>
-      <div class="oval has-background-white"> 
+      <div class="oval has-background-white">
           <div class="circle">
         <video ref="video_screen" class="zoom mt-2" id="screenVideo" autoplay muted></video>
         </div>
       </div>
-      
+
         <button class="btn" @click="send_reaction('Sad')" aria-label="Sad" data-microtip-position="left" role="tooltip">
             <img src="../assets/mini-emoji/Sad.svg" :class="[ sad_mini_emoji ? 'animation' : '' ]">
         </button>
@@ -21,14 +21,14 @@
 
             </div>
             <div v-else >
-                <img src="../assets/mini-emoji/Toggle_on.svg"> 
+                <img src="../assets/mini-emoji/Toggle_on.svg">
             </div>
-            
+
         </button>
         <button class="btn"  @click="send_reaction('Anger')" aria-label="Angry" data-microtip-position="right" role="tooltip">
             <img src="../assets/mini-emoji/Anger.svg" :class="[ anger_mini_emoji ? 'animation' : '' ]">
         </button>
-        <button class="btn" :class="[ afraid_mini_emoji ? 'animation' : '' ]" @click="send_reaction('Fear')" aria-label="Fear" data-microtip-position="right" role="tooltip">
+        <button class="btn" :class="[ fear_mini_emoji ? 'animation' : '' ]" @click="send_reaction('Fear')" aria-label="Fear" data-microtip-position="right" role="tooltip">
             <img src="../assets/mini-emoji/Fear.svg" :class="[ fear_mini_emoji ? 'animation' : '' ]">
         </button>
         <button class="btn"  @click="send_reaction('Disgust')" aria-label="Disgust" data-microtip-position="right" role="tooltip">
@@ -44,7 +44,7 @@ const webSocketScreen = new WebSocket("ws://127.0.0.1:3002");
 
 let localStream
 let peerScreen
-const id_screen = 'screen'
+// const id_screen = 'screen'
 
 export default {
     name: 'ScreenOnStream',
@@ -55,7 +55,7 @@ export default {
     methods: {
         receive_start_session() {
             this.$eventHub.$on('start_session', this.start_screenShare);
-            console.log('start_session')
+            // console.log('start_session')
 
         },
         start_screenShare(msg){
@@ -69,7 +69,7 @@ export default {
             var msg = { reaction: reaction };
             axios.post(url, msg)
                 .catch((error) => { console.log(error); });
-            
+
         this.sad_mini_emoji = true;
         this.happy_mini_emoji= true;
         this.surprised_mini_emoji= true;
@@ -148,12 +148,12 @@ export default {
                     this.sendDataScreen({
                         type: "send_candidate",
                         candidate: e.candidate
-                    }, id_screen)
+                    }, this.screen_room_id)
                 })
                 console.log("join_call")
                 this.sendDataScreen({
                     type: "join_call"
-                }, id_screen)
+                }, this.screen_room_id)
 
             }, (error) => {
                 console.log(error)
@@ -181,7 +181,7 @@ export default {
                 this.sendDataScreen({
                     type: "send_answer",
                     answer: answer
-                }, id_screen)
+                }, this.screen_room_id)
             }, error => {
                 console.log(error)
             })
@@ -205,6 +205,13 @@ export default {
     },
     created(){
         this.receive_start_session();
+        var room_id = this.$route.params.room_id;
+        if(room_id){
+            console.log('room ' + room_id);
+            this.screen_room_id = 'screen_' + room_id;
+        }else{
+            console.log('NO SCREEN ID');
+        }
     },
 
     data(){
@@ -216,6 +223,7 @@ export default {
         anger_mini_emoji: false,
         fear_mini_emoji: false,
         disgust_mini_emoji: false,
+        screen_room_id: null,
         }
     }
 }
@@ -245,7 +253,7 @@ export default {
     z-index: 1;
     background: Transparent;
     border-radius: 50px;
-
+    width: 10%;
 }
 
 .btn:focus {

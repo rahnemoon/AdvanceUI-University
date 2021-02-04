@@ -1,34 +1,20 @@
 {
   "metadata": {
-    "soundFile": "/Users/amirsalarmolaie/Documents/flask/Cache/output.wav",
-    "duration": 4.33
+    "soundFile": "/home/Linman/git/AdvanceUI/flask/Cache/output.wav",
+    "duration": 1.59
   },
   "mouthCues": [
-    { "start": 0.00, "end": 0.04, "value": "X" },
-    { "start": 0.04, "end": 0.30, "value": "C" },
-    { "start": 0.30, "end": 0.66, "value": "B" },
-    { "start": 0.66, "end": 0.76, "value": "C" },
-    { "start": 0.76, "end": 0.83, "value": "B" },
-    { "start": 0.83, "end": 0.90, "value": "G" },
-    { "start": 0.90, "end": 1.04, "value": "C" },
-    { "start": 1.04, "end": 1.18, "value": "B" },
-    { "start": 1.18, "end": 1.25, "value": "G" },
-    { "start": 1.25, "end": 1.39, "value": "C" },
-    { "start": 1.39, "end": 1.74, "value": "B" },
-    { "start": 1.74, "end": 1.88, "value": "C" },
-    { "start": 1.88, "end": 2.16, "value": "B" },
-    { "start": 2.16, "end": 2.23, "value": "F" },
-    { "start": 2.23, "end": 2.37, "value": "C" },
-    { "start": 2.37, "end": 2.45, "value": "A" },
-    { "start": 2.45, "end": 2.53, "value": "C" },
-    { "start": 2.53, "end": 2.61, "value": "A" },
-    { "start": 2.61, "end": 2.77, "value": "C" },
-    { "start": 2.77, "end": 2.84, "value": "B" },
-    { "start": 2.84, "end": 3.05, "value": "G" },
-    { "start": 3.05, "end": 3.26, "value": "B" },
-    { "start": 3.26, "end": 3.59, "value": "D" },
-    { "start": 3.59, "end": 3.64, "value": "C" },
-    { "start": 3.64, "end": 3.82, "value": "B" },
-    { "start": 3.82, "end": 4.33, "value": "X" }
+    { "start": 0.00, "end": 0.01, "value": "X" },
+    { "start": 0.01, "end": 0.07, "value": "A" },
+    { "start": 0.07, "end": 0.32, "value": "B" },
+    { "start": 0.32, "end": 0.53, "value": "D" },
+    { "start": 0.53, "end": 0.67, "value": "C" },
+    { "start": 0.67, "end": 0.74, "value": "B" },
+    { "start": 0.74, "end": 0.88, "value": "D" },
+    { "start": 0.88, "end": 0.95, "value": "C" },
+    { "start": 0.95, "end": 1.03, "value": "A" },
+    { "start": 1.03, "end": 1.23, "value": "C" },
+    { "start": 1.23, "end": 1.37, "value": "B" },
+    { "start": 1.37, "end": 1.59, "value": "X" }
   ]
 }

@@ -6,11 +6,16 @@
 </template>
 <script>
 import ScreenOnStream from './ScreenOnStream.vue'
+// import { Vue, Component } from "vue-property-decorator";
+// import { SweetAlertOptions, SweetAlertResult } from "sweetalert2";
+// import { version, description } from "vue-simple-alert/package.json";
+// import GithubRibbon from "@/components/GithubRibbon.vue";
+
 const webSocketCall = new WebSocket("ws://127.0.0.1:3002");
 
 let localStream
 let peerCall
-const id_call = 'Childish'
+// const id_call = 'Childish'
 
 
 
@@ -25,7 +30,7 @@ export default {
     methods: {
         receive_start_session() {
             this.$eventHub.$on('start_session', this.start_call);
-            console.log('start_session')
+            // console.log('start_session')
 
         },
         start_call(msg){
@@ -62,12 +67,12 @@ export default {
                     this.sendDataCall({
                         type: "send_candidate",
                         candidate: e.candidate
-                    }, id_call)
+                    }, this.call_room_id)
                 })
                 console.log("join_call")
                 this.sendDataCall({
                     type: "join_call"
-                }, id_call)
+                }, this.call_room_id)
 
             }, (error) => {
                 console.log(error)
@@ -101,7 +106,7 @@ export default {
                 this.sendDataCall({
                     type: "send_answer",
                     answer: answer
-                }, id_call)
+                }, this.call_room_id)
             }, error => {
                 console.log(error)
             })
@@ -114,6 +119,23 @@ export default {
             this.handleSignallingCall(JSON.parse(event.data))
         };
         this.receive_start_session();
+    },
+    created() {
+        var room_id = this.$route.params.room_id;
+        if(room_id){
+            console.log('room ' + room_id);
+            this.call_room_id = 'child_' + room_id;
+        }else{
+            console.log('NO CALL ID');
+            this.$alert("Please eneter the name of the room in the address bar", "Error", "error", {
+            confirmButtonText: "Got it!"
+          });
+        }
+    },
+    data() {
+        return {
+            call_room_id: null,
+        }
     },
 }
 </script>

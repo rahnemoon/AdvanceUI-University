@@ -1,13 +1,13 @@
 <template>
     <div>
-    <button class="button is-light is-small is-light is-rounded mt-2 ml-2" 
+    <button class="button is-light is-small is-light is-rounded mt-2 ml-2"
     aria-label="Start streaming" data-microtip-position="right" role="tooltip" v-on:click='start_session()'>Start Session</button>
 
     <div style="padding-top: calc((100vh - 90vh)/2)">
         <audio id="audiofile" :src="linkAudio" controls autoplay></audio><br>
 
         <h1 class="circle">
-            
+
 <div v-if="emoji_visibility" id="hide">
                 <img :class="[ sad_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Sad.svg">
                 <img :class="[ happy_mini_emoji ? 'animation' : '' ]" class="emoj" src="../assets/mini-emoji/Happy.svg">
@@ -195,8 +195,8 @@ const webSocketScreen = new WebSocket("ws://127.0.0.1:3002");
 let localStream
 let peerCall
 let peerScreen
-const child_id = 'Childish'
-const screen_id = 'screen'
+// const child_id = this.room_id + '_child'
+// const screen_id = this.room_id + '_screen'
 export default {
     name: 'Child',
     props: {
@@ -205,8 +205,8 @@ export default {
 
     methods: {
         start_session(){
-            this.sendDataCall({type: "store_user"}, "Childish");
-            this.sendDataScreen({type: "store_user"}, "screen");
+            this.sendDataCall({type: "store_user"}, this.child_room_id);
+            this.sendDataScreen({type: "store_user"}, this.screen_room_id);
             setTimeout(() => { this.screenShare() }, 2000);
             setTimeout(() => { this.startCall() }, 1000);
         },
@@ -237,11 +237,11 @@ export default {
                     this.sendDataScreen({
                         type: "store_candidate",
                         candidate: e.candidate
-                    }, screen_id)
+                    }, this.screen_room_id)
                 })
                 console.log("erfan")
 
-                this.createAndSendOfferScreen(screen_id);
+                this.createAndSendOfferScreen(this.screen_room_id);
             }, (error) => {
                 console.log(error)
             })
@@ -311,9 +311,9 @@ export default {
                     this.sendDataCall({
                         type: "store_candidate",
                         candidate: e.candidate
-                    }, child_id)
+                    }, this.child_room_id)
                 })
-                this.createAndSendOfferCall(child_id);
+                this.createAndSendOfferCall(this.child_room_id);
             }, (error) => {
                 console.log(error)
             })
@@ -769,8 +769,9 @@ export default {
             metadata: null,
             linkAudio: null,
             timer: null,
+            child_room_id: null,
+            screen_room_id: null,
             emoji_visibility: false,
-
             sad_mini_emoji: false,
             happy_mini_emoji: false,
             surprised_mini_emoji: false,
@@ -783,7 +784,19 @@ export default {
         socket.on('connect', function() {
             socket.emit('send_file', { data: 'connected!!!!!!!!!!!' });
         });
+        var room_id = this.$route.params.room_id;
+        if(room_id){
+            console.log(room_id);
+            this.child_room_id = 'child_' + room_id;
+            this.screen_room_id = 'screen_' + room_id;
 
+        }else{
+            var room = 'room' + Math.floor(Math.random() * 1000);
+            window.history.pushState(null, null, `/ch/${room}`);
+            this.child_room_id = 'child_' + room;
+            this.screen_room_id = 'screen_' + room;
+            console.log(room);
+        }
         // this.wakeup_server_to_send_data();
         // this.timer = setInterval(this.wakeup_server_to_send_data, 1000)
 
