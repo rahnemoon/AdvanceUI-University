@@ -178,7 +178,7 @@
 </template>
 <script>
 import io from 'socket.io-client';
-import TimelineMax from '../Tween.js';
+import TimelineMax from '../assets/js/Tween.js';
 import { gsap } from "gsap";
 
 
@@ -195,8 +195,7 @@ const webSocketScreen = new WebSocket("ws://127.0.0.1:3002");
 let localStream
 let peerCall
 let peerScreen
-// const child_id = this.room_id + '_child'
-// const screen_id = this.room_id + '_screen'
+
 export default {
     name: 'Child',
     props: {
@@ -212,7 +211,6 @@ export default {
         },
         screenShare() {
             navigator.mediaDevices.getDisplayMedia().then(stream => {
-                console.log(stream)
                 localStream = stream
                 let configuration = {
                     iceServers: [{
@@ -233,14 +231,11 @@ export default {
                     if (e.candidate == null)
                         return
                     console.log("store_candidate")
-                    console.log(e.candidate);
                     this.sendDataScreen({
                         type: "store_candidate",
                         candidate: e.candidate
                     }, this.screen_room_id)
                 })
-                console.log("erfan")
-
                 this.createAndSendOfferScreen(this.screen_room_id);
             }, (error) => {
                 console.log(error)
@@ -261,7 +256,6 @@ export default {
 
         createAndSendOfferScreen(id) {
             peerScreen.createOffer((offer) => {
-                console.log(offer);
                 this.sendDataScreen({
                     type: "store_offer",
                     offer: offer
@@ -273,7 +267,6 @@ export default {
         },
 
         sendDataScreen(data, id) {
-            console.log(data);
             data.username = id;
             webSocketScreen.send(JSON.stringify(data));
         },
@@ -284,9 +277,7 @@ export default {
                 audio: false,
                 video: true,
             }).then(stream => {
-                console.log(stream)
                 localStream = stream
-
 
                 let configuration = {
                     iceServers: [{
@@ -307,7 +298,6 @@ export default {
                     if (e.candidate == null)
                         return
                     console.log("store_candidate")
-                    console.log(e.candidate);
                     this.sendDataCall({
                         type: "store_candidate",
                         candidate: e.candidate
@@ -345,7 +335,6 @@ export default {
         },
 
         sendDataCall(data, id) {
-            console.log(data);
             data.username = id;
             webSocketCall.send(JSON.stringify(data));
         },
@@ -700,9 +689,7 @@ export default {
 
 
         wakeup_server_to_send_data() {
-            socket.emit('send_file', 'hiii!!');
-            console.log("hihihi");
-
+            socket.emit('send_file', 'hi!');
         },
 
     },
@@ -741,8 +728,6 @@ export default {
         // Emote the full body emotion recearion
         socket.on('full_emotion_recreation', emotion => {
             this.emotion_recreation(emotion)
-            // this.selected_mini_emoji = emotion;
-            console.log(emotion);
         });
 
         socket.on('toggle_emoji_circle', emotion => {
@@ -758,7 +743,6 @@ export default {
             this.fear_mini_emoji=false;
             this.disgust_mini_emoji=false;
             }
-            console.log(this.emoji_visibility)
         });
         this.timer = setInterval(this.wakeup_server_to_send_data, 3000)
     },
@@ -797,8 +781,6 @@ export default {
             this.screen_room_id = 'screen_' + room;
             console.log(room);
         }
-        // this.wakeup_server_to_send_data();
-        // this.timer = setInterval(this.wakeup_server_to_send_data, 1000)
 
     },
 }
@@ -966,7 +948,6 @@ export default {
 
 
 button {
-    /*padding: 16px 30px;*/
     cursor: pointer;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 700;

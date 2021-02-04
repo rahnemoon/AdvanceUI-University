@@ -19,10 +19,10 @@ export default {
 
     methods: {
         receive_msg() {
-            this.$eventHub.$on('msg_history_update', this.update_nokhod);
+            this.$eventHub.$on('msg_history_update', this.update_history);
 
         },
-        update_nokhod(msg) {
+        update_history(msg) {
             this.history.unshift(msg);
         }
     },

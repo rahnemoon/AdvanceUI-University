@@ -18,8 +18,6 @@ import QuickR from './QuickR.vue'
 import ChatInput from './ChatInput.vue'
 import NavBar from './NavBar.vue'
 
-
-
 export default {
     name: 'Therapist',
     components: {

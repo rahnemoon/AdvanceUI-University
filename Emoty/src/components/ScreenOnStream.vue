@@ -44,7 +44,6 @@ const webSocketScreen = new WebSocket("ws://127.0.0.1:3002");
 
 let localStream
 let peerScreen
-// const id_screen = 'screen'
 
 export default {
     name: 'ScreenOnStream',
@@ -55,8 +54,6 @@ export default {
     methods: {
         receive_start_session() {
             this.$eventHub.$on('start_session', this.start_screenShare);
-            // console.log('start_session')
-
         },
         start_screenShare(msg){
             if (msg == 'start') {
@@ -125,8 +122,6 @@ export default {
                 video: true,
             }).then(stream => {
                 localStream = stream
-                // this.$refs.video_lo.srcObject = stream;
-
                 let configuration = {
                     iceServers: [{
                         "urls": ["stun:stun.l.google.com:19302",
@@ -188,8 +183,6 @@ export default {
         },
 
         sendDataScreen(data, id) {
-            console.log(data);
-            console.log(webSocketScreen);
             data.username = id
             webSocketScreen.send(JSON.stringify(data));
         },
@@ -253,7 +246,6 @@ export default {
     z-index: 1;
     background: Transparent;
     border-radius: 50px;
-    width: 10%;
 }
 
 .btn:focus {

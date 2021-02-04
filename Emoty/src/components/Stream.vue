@@ -6,18 +6,11 @@
 </template>
 <script>
 import ScreenOnStream from './ScreenOnStream.vue'
-// import { Vue, Component } from "vue-property-decorator";
-// import { SweetAlertOptions, SweetAlertResult } from "sweetalert2";
-// import { version, description } from "vue-simple-alert/package.json";
-// import GithubRibbon from "@/components/GithubRibbon.vue";
 
 const webSocketCall = new WebSocket("ws://127.0.0.1:3002");
 
 let localStream
 let peerCall
-// const id_call = 'Childish'
-
-
 
 export default {
     name: 'Stream',
@@ -30,8 +23,6 @@ export default {
     methods: {
         receive_start_session() {
             this.$eventHub.$on('start_session', this.start_call);
-            // console.log('start_session')
-
         },
         start_call(msg){
             if (msg == 'start') {
@@ -44,8 +35,6 @@ export default {
                 video: true,
             }).then(stream => {
                 localStream = stream
-                // this.$refs.video_lo.srcObject = stream;
-
                 let configuration = {
                     iceServers: [{
                         "urls": ["stun:stun.l.google.com:19302",
@@ -82,19 +71,15 @@ export default {
         handleSignallingCall(data) {
             switch (data.type) {
                 case "offer":
-                    console.log("offer")
                     peerCall.setRemoteDescription(data.offer)
                     this.createAndSendAnswerCall()
                     break
                 case "candidate":
-                    console.log("candidate")
                     peerCall.addIceCandidate(data.candidate)
             }
 
         },
         sendDataCall(data, id) {
-            console.log(data);
-            console.log(webSocketCall);
             data.username = id
             webSocketCall.send(JSON.stringify(data));
         },

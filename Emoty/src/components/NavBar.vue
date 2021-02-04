@@ -27,7 +27,6 @@ export default {
     },
     methods:{
         start_session() {
-            //EventBus.$emit('msg_history_update', msg);
             this.$eventHub.$emit('start_session', 'start');
             console.log('click')
         },

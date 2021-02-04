@@ -71,7 +71,6 @@ export default {
             )
         },
         update_history(msg) {
-            //EventBus.$emit('msg_history_update', msg);
             this.$eventHub.$emit('msg_history_update', msg);
         },
     },
