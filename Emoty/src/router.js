@@ -9,15 +9,25 @@ Vue.use(Router);
 export default new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [{
-            path: '/th',
+    routes: [
+        {
+            path: '/th/:room_id',
             name: 'Therapist',
             component: Therapist,
         },
-
+        {
+            path: '/ch/:room_id',
+            name: 'Child',
+            component: Child,
+        },
+        {
+            path: '/th',
+            name: 'Therapist_without_room',
+            component: Therapist,
+        },
         {
             path: '/ch',
-            name: 'Child',
+            name: 'Child_without_room',
             component: Child,
         },
     ],
