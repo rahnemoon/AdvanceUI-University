@@ -1,4 +1,4 @@
-# Emoty [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) ![](https://erguotou520.github.io/vue-version-badge/vue2.x.svg)
+# Emoty [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) ![](https://erguotou520.github.io/vue-version-badge/vue2.x.svg)
 **Emoty** provides a new conversational experience for therapists and Children with ***neurodevelopmental disability (NDD)*** problems. This system helps children with such conditions to develop and cultivate their emotional abilities by offering a friendly and enjoyable environment. The therapist communicates with the child as an animated character via the ***wizard of Oz*** scenario.
 
 ## Running the Project
