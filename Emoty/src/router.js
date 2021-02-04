@@ -9,8 +9,7 @@ Vue.use(Router);
 export default new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [
-        {
+    routes: [{
             path: '/th/:room_id',
             name: 'Therapist',
             component: Therapist,

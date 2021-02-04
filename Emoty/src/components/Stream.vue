@@ -24,7 +24,7 @@ export default {
         receive_start_session() {
             this.$eventHub.$on('start_session', this.start_call);
         },
-        start_call(msg){
+        start_call(msg) {
             if (msg == 'start') {
                 this.joinCall()
             }
@@ -107,14 +107,14 @@ export default {
     },
     created() {
         var room_id = this.$route.params.room_id;
-        if(room_id){
+        if (room_id) {
             console.log('room ' + room_id);
             this.call_room_id = 'child_' + room_id;
-        }else{
+        } else {
             console.log('NO CALL ID');
             this.$alert("Please eneter the name of the room in the address bar", "Error", "error", {
-            confirmButtonText: "Got it!"
-          });
+                confirmButtonText: "Got it!"
+            });
         }
     },
     data() {
